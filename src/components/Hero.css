@@ -1,0 +1,33 @@
+.Hero{
+    display: flex;
+    flex-direction: column;
+    /* margin: 20px; */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.Hero h1{
+    color: rgb(75,75,93);
+    color: linear-gradient(90deg, rgba(75,75,93,1) 0%, rgba(28,29,29,1) 50%, rgba(98,86,82,1) 100%);
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+}
+
+.Hero img{
+    width: 80%;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    filter: brightness(80%);
+}
+
+.Hero p{
+    color: rgb(75,75,93);
+    color: linear-gradient(90deg, rgba(75,75,93,1) 0%, rgba(28,29,29,1) 50%, rgba(98,86,82,1) 100%);
+    letter-spacing: 1px;
+    font-style: italic;
+    font-size: 0.95rem;
+    margin:20px 10px;
+    text-align: center;
+}

@@ -1,0 +1,18 @@
+
+.Products{
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapProducts{
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    height: 400px;
+    box-sizing: border-box;
+    scroll-snap-type: x mandatory;
+    margin-bottom: 30px;
+}
+
