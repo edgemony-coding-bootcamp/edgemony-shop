@@ -1,0 +1,11 @@
+.Products {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	@media screen and (max-width: 880px) {
+		height: 60vh;
+		overflow-x: auto;
+		flex-direction: column;
+	}
+}

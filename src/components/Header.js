@@ -1,7 +1,14 @@
-import React from 'react';
+import './Header.scss';
+import PropTypes from 'prop-types';
 
-const Header = () => {
-	return <header>Header</header>;
+const Header = ({ logo }) => (
+	<header className='Header'>
+		<img src={logo} alt='' />
+	</header>
+);
+
+Header.propTypes = {
+	logo: PropTypes.string.isRequired,
 };
 
 export default Header;

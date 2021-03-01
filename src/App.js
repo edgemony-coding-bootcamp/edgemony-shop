@@ -1,8 +1,11 @@
-import './App.scss';
+import Main from './containers/Main';
+
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
-import Main from './containers/Main';
+import Products from './components/Products';
+
+import './App.scss';
 
 const fakeProducts = require('./mocks/data/products.json');
 
@@ -17,18 +20,15 @@ const data = {
 const { title, description, logo, cover, products } = data;
 
 function App() {
-	console.log(title);
-	console.log(description);
-	console.log(logo);
-	console.log(cover);
 	console.log(products);
 	return (
 		<>
-			<Header />
+			<Header logo={logo} />
 			<Main>
-				<Hero />
+				<Hero cover={cover} description={description} title={title} />
+				<Products products={products} />
 			</Main>
-			<Footer />
+			<Footer title={title} />
 		</>
 	);
 }
