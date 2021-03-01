@@ -28,7 +28,7 @@ function App() {
 			<Main>
 				<Hero cover={cover} description={description} />
 			</Main>
-			<Footer />
+			<Footer title={title} />
 		</>
 	);
 }

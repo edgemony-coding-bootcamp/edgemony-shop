@@ -1,9 +1,10 @@
 .Header {
-	height: 3rem;
+	min-height: 2rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	padding: 0.5rem;
 	img {
-		height: 50px;
+		height: 2rem;
 	}
 }
