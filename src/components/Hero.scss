@@ -1,0 +1,12 @@
+.Hero {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	h2 {
+		font-size: small;
+	}
+	img {
+		height: 200px;
+	}
+}

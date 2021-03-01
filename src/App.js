@@ -24,9 +24,9 @@ function App() {
 	console.log(products);
 	return (
 		<>
-			<Header />
+			<Header logo={logo} title={title} />
 			<Main>
-				<Hero />
+				<Hero cover={cover} description={description} />
 			</Main>
 			<Footer />
 		</>
