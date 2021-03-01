@@ -1,10 +1,16 @@
 .Header {
-	min-height: 2rem;
+	min-height: 3rem;
+	margin-bottom: 2rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 0.5rem;
+	background-color: black;
+	color: white;
+	span {
+		font-weight: bold;
+	}
 	img {
-		height: 2rem;
+		height: 3rem;
 	}
 }

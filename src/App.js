@@ -5,6 +5,8 @@ import Hero from './components/Hero';
 import Footer from './components/Footer';
 import Products from './components/Products';
 
+import './App.scss';
+
 const fakeProducts = require('./mocks/data/products.json');
 
 const data = {
@@ -21,9 +23,9 @@ function App() {
 	console.log(products);
 	return (
 		<>
-			<Header logo={logo} title={title} />
+			<Header logo={logo} />
 			<Main>
-				<Hero cover={cover} description={description} />
+				<Hero cover={cover} description={description} title={title} />
 				<Products products={products} />
 			</Main>
 			<Footer title={title} />

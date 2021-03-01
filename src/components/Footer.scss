@@ -1,9 +1,11 @@
 .Footer {
-	min-height: 2rem;
+	margin-top: 2rem;
+	min-height: 3rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	background-color: black;
 	color: white;
 	padding: 0.5rem;
+	box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
 }
