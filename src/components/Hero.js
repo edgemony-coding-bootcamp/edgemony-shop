@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types'
+import './Hero.css'
+
 function Hero ({image,title,description}){
     return (
-        <div>
+        <div className="Hero">
             <h1>{title}</h1>
             <img src={image}/>
             <p>{description}</p>
