@@ -1,0 +1,19 @@
+.Product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid gray;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.Product img {
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.Product .content {
+  flex-grow: 1;
+}
