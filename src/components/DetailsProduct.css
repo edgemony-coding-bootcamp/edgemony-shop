@@ -23,11 +23,13 @@ body {
   
   .modal__body {
     position: absolute;
-    min-width: 350px;
+    min-width: 180px;
     max-width: 450px;
-    min-height: 500px;
-    top: 40%;
-    left: 30%;
+    min-height: 400px;
+    max-height: 550px;
+    top: 20%;
+    left: 10%;
+    right: 10%;
     background-color: white;
     border-radius: 5px;
     display: flex;

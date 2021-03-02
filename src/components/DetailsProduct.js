@@ -6,7 +6,8 @@ export default function DetailsProduct(props) {
   const { title, image, price, description} = props.data;
   const [isClose,setIsClose]=useState(false)
   
- function handleCloseModal(){
+ 
+  function handleCloseModal(){
     setIsClose(true);
   }
 

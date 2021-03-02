@@ -7,11 +7,9 @@ function CardProduct(props) {
   const { title, image, price, description } = props;
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-
   function handleClick() {
-   
+
     setModalIsOpen(!modalIsOpen);
-    
   }
   function renderProduct() {
     return (
@@ -26,16 +24,16 @@ function CardProduct(props) {
       </div>
     );
   }
-  
-  return !modalIsOpen ? (
-    renderProduct()
-    ) : (
-      <>
+
+  return (
+    <>
       {renderProduct()}
-      <DetailsProduct data={props} /> 
-      </>
-  
-  )
+      {modalIsOpen?
+      <DetailsProduct data={props} modalIsOpen={modalIsOpen}/>:
+      <></>
+      }
+    </>
+  );
 }
 
 CardProduct.propTypes = {
