@@ -9,7 +9,9 @@ function CardProduct(props) {
 
 
   function handleClick() {
+   
     setModalIsOpen(!modalIsOpen);
+    
   }
   function renderProduct() {
     return (
