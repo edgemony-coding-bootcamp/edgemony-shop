@@ -25,7 +25,7 @@ function App() {
   <div className="App">
     <Header logo={data.logo} />
     <Hero title={data.title} image={data.cover} description={data.description}/>
-    <Products products={data.products}/>
+    <Products products={data.products} description={data.products.description}/>
     <Footer logo={data.logo} company={data.company} year={currentYear}/>
   </div>
   )}
