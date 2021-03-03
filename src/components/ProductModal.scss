@@ -1,0 +1,38 @@
+.ProductModal {
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+	position: fixed;
+	background-color: #ffffffc4;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	.modalBody {
+		max-width: 520px;
+		width: 90%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: #ffffff;
+		padding: 1rem;
+		border-radius: 10px;
+	}
+	h2 {
+		margin-top: inherit;
+		text-transform: uppercase;
+		font-size: 16px;
+	}
+	p {
+		font-size: 18px !important;
+		font-weight: 500 !important;
+	}
+	img {
+		width: 40%;
+	}
+	body {
+		max-width: 520px;
+		background-color: rgba(134, 62, 185, 0.26);
+	}
+}
