@@ -23,7 +23,8 @@ function App() {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
-	const [errorMsg, setErrorMsg] = useState('errore pagina non trovata.');
+	const [errorMsg, setErrorMsg] = useState('');
+	const [recon, setRecon] = useState(false);
 
 	useEffect(() => {
 		setLoading(true);
@@ -31,7 +32,6 @@ function App() {
 		fetch('https://fakestoreapi.com/products')
 			.then((res) => res.json())
 			.then((products) => {
-				console.log(products);
 				setProducts(products);
 				setLoading(false);
 			})
@@ -40,7 +40,7 @@ function App() {
 				setError(true);
 				setErrorMsg(`${err}`);
 			});
-	}, []);
+	}, [recon]);
 
 	return (
 		<>
@@ -48,7 +48,18 @@ function App() {
 			<Main>
 				<Hero cover={cover} description={description} title={title} />
 				{loading ? <Loader /> : <Products products={products} />}
-				{error && <Message msg={errorMsg} />}
+				{error && (
+					<>
+						<Message msg={errorMsg} />{' '}
+						<button
+							className='recon-btn'
+							onClick={() => {
+								setRecon(!recon);
+							}}>
+							Try again!
+						</button>
+					</>
+				)}
 			</Main>
 			<Footer title={title} />
 		</>

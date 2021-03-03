@@ -18,7 +18,7 @@ const Product = ({ product }) => {
 					<h2>{category}</h2>
 					<p>{description}</p>
 				</div>
-				<div class='product-price-btn'>
+				<div className='product-price-btn'>
 					<p>
 						<span>Price € {price}</span>
 					</p>
