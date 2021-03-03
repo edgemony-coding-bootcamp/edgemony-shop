@@ -20,7 +20,7 @@ const Product = ({ product }) => {
 				</div>
 				<div class='product-price-btn'>
 					<p>
-						<span>€ {price}</span>
+						<span>Price € {price}</span>
 					</p>
 					<button
 						onClick={() => {

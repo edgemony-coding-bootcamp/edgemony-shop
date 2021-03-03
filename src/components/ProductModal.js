@@ -17,7 +17,7 @@ const ProductModal = ({ isOpen, closeModal, product }) => {
 				<h2>{category}</h2>
 				<p>{description}</p>
 				<p>
-					<span>€ {price}</span>
+					<span>Price € {price}</span>
 				</p>
 			</div>
 		</div>
