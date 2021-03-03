@@ -6,6 +6,7 @@ import Hero from './components/Hero';
 import Footer from './components/Footer';
 import Products from './components/Products';
 import Loader from './components/Loader';
+import Message from './components/Message';
 
 import './App.scss';
 
@@ -46,6 +47,7 @@ function App() {
 			<Main>
 				<Hero cover={cover} description={description} title={title} />
 				{loading ? <Loader /> : <Products products={products} />}
+				{error ? <Message msg={'Riprova'}>Errore</Message> : null}
 			</Main>
 			<Footer title={title} />
 		</>
