@@ -23,6 +23,7 @@ function App() {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
+	const [errorMsg, setErrorMsg] = useState('errore pagina non trovata.');
 
 	useEffect(() => {
 		setLoading(true);
@@ -37,7 +38,7 @@ function App() {
 			.catch((err) => {
 				setLoading(false);
 				setError(true);
-				console.log(err);
+				setErrorMsg(`${err}`);
 			});
 	}, []);
 
@@ -47,7 +48,7 @@ function App() {
 			<Main>
 				<Hero cover={cover} description={description} title={title} />
 				{loading ? <Loader /> : <Products products={products} />}
-				{error ? <Message msg={'Riprova'}>Errore</Message> : null}
+				{error && <Message msg={errorMsg} />}
 			</Main>
 			<Footer title={title} />
 		</>

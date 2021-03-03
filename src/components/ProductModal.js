@@ -12,7 +12,6 @@ const ProductModal = ({ isOpen, closeModal, product }) => {
 			}}>
 			<div className='modalBody'>
 				<img src={image} alt='' />
-
 				<h1>{title}</h1>
 				<h2>{category}</h2>
 				<p>{description}</p>
@@ -27,7 +26,7 @@ const ProductModal = ({ isOpen, closeModal, product }) => {
 ProductModal.propTypes = {
 	product: PropTypes.object.isRequired,
 	isOpen: PropTypes.bool.isRequired,
-	closeOpen: PropTypes.func.isRequired,
+	closeOpen: PropTypes.func,
 };
 
 export default ProductModal;
