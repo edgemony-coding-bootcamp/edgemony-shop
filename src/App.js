@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
 import Products from './components/Products';
+import Loader from './components/Loader';
 
 import './App.scss';
 
@@ -44,7 +45,7 @@ function App() {
 			<Header logo={logo} />
 			<Main>
 				<Hero cover={cover} description={description} title={title} />
-				<Products products={products} />
+				{loading ? <Loader /> : <Products products={products} />}
 			</Main>
 			<Footer title={title} />
 		</>

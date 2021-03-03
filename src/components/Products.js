@@ -3,8 +3,6 @@ import './Products.scss';
 import PropTypes from 'prop-types';
 
 const Products = ({ products }) => {
-	// const [isModalOpen, setIsModalOpen] = useState(false)
-
 	return <section className='Products'>{products && products.map((product, key) => <Product key={key} product={product} />)}</section>;
 };
 
