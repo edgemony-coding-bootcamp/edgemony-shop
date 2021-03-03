@@ -5,7 +5,7 @@ function Hero ({image,title,description}){
     return (
         <div className="Hero">
             <h1>{title}</h1>
-            <img src={image}/>
+            <img src={image} alt={"Hero"}/>
             <p>{description}</p>
         </div>
     )

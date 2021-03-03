@@ -6,13 +6,13 @@ function Products(props) {
   return (
     <main className="Products">
       <div className="wrapProducts">
-        {props.products.map((product, index) => {
+        {props.products.map((item) => {
           return (
             <>
               <CardProduct
-                title={product.title}
-                image={product.image}
-                price={product.price}
+                key={item.id}
+                product={item}
+               
               />
             </>
           );
