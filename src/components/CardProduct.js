@@ -8,8 +8,7 @@ function CardProduct(props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   function handleClick() {
-
-    setModalIsOpen(!modalIsOpen);
+    setModalIsOpen(true);
   }
   function renderProduct() {
     return (
@@ -29,7 +28,7 @@ function CardProduct(props) {
     <>
       {renderProduct()}
       {modalIsOpen?
-      <DetailsProduct data={props} modalIsOpen={modalIsOpen}/>:
+      <DetailsProduct data={props} isOpen={()=>{setModalIsOpen(false)}}/>:
       <></>
       }
     </>
