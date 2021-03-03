@@ -1,5 +1,5 @@
 .is-blur {
-    filter: blur(0.19rem); 
+    backdrop-filter: blur(0.19rem); 
     position: absolute;
     top:0;
     left:0;
