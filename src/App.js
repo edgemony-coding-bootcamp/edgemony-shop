@@ -1,7 +1,10 @@
+import { useState } from 'react';
+
 import "./App.css";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import ProductList from "./components/ProductList";
+import ProductModal from "./components/ProductModal";
 
 const fakeProducts = require("./mocks/data/products.json");
 
@@ -16,6 +19,21 @@ const data = {
 };
 
 function App() {
+  const [ productInModal, setProductInModal ] = useState(null)
+  const [ modalIsOpen, setModalIsOpen ] = useState(false)
+
+  function openProductModal(product) {
+    console.log(product)
+    setProductInModal(product)
+    setModalIsOpen(true)
+  }
+
+  function closeModal() {
+    setModalIsOpen(false)
+    setTimeout(() => {
+      setProductInModal(false)
+    }, 500)
+  }
   return (
     <div className="App">
       <Header logo={data.logo} title={data.title} />
@@ -24,7 +42,8 @@ function App() {
         description={data.description}
         cover={data.cover}
       />
-      <ProductList products={data.products}/>
+      <ProductList products={data.products} openProductModal={openProductModal}/>
+      <ProductModal isOpen={ modalIsOpen } content={productInModal} closeModal={closeModal} />
     </div>
   );
 }
