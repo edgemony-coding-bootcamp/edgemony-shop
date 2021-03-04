@@ -18,8 +18,9 @@ export const handlers = [
   rest.get(
     "/products",
     randomError(function orderItems(req, res, ctx) {
-      const limit = req.url.searchParams.get("limit");
       const q = req.url.searchParams.get("q");
+      const limit = parseInt(req.url.searchParams.get("limit"));
+      const offset = parseInt(req.url.searchParams.get("offset")) || 0;
       let filteredProducts = products;
       if (q) {
         filteredProducts = products.filter(
@@ -27,7 +28,7 @@ export const handlers = [
         );
       }
       if (limit) {
-        filteredProducts = filteredProducts.slice(0, limit);
+        filteredProducts = filteredProducts.slice(offset, offset + limit);
       }
       return res(ctx.status(200), ctx.json(filteredProducts));
     })
