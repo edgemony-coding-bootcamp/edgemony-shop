@@ -2,8 +2,17 @@ import { rest } from "msw";
 const products = require("./data/products.json");
 const categories = require("./data/categories.json");
 
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
 function randomError(resolverFn) {
   return function (req, res, ctx) {
+    sleep(2000);
     if (Math.random() > 0.8) {
       return res(ctx.status(500));
     }
@@ -39,9 +48,7 @@ export const handlers = [
     "/products/categories/:category",
     randomError(function orderItems(req, res, ctx) {
       const { category } = req.params;
-      const filteredProducts = products.filter(
-        (p) => p.category === category
-      );
+      const filteredProducts = products.filter((p) => p.category === category);
       return res(ctx.status(200), ctx.json(filteredProducts));
     })
   ),
