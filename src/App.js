@@ -5,6 +5,7 @@ import Products from "./components/Products";
 import Footer from "./components/Footer";
 import React, { useState, useEffect } from "react";
 import Loading from "./components/Loading";
+import ErrorBanner from "./components/ErrorBanner";
 
 const fakeProducts = require("./mocks/data/products.json");
 const currentYear = new Date().getFullYear();
@@ -22,35 +23,62 @@ const data = {
 
 function App() {
   const [dataAPI, setDataAPI] = useState([]);
-  const [isLoading,setLoading]=useState(false)
+  const [isLoading, setLoading] = useState(false);
+  const [isErrorAPI, setErrorAPI] = useState(false);
+  const [retry, setRetry] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetch("https://fakestoreapi.com/products")
       .then((response) => response.json())
       .then((res) => {
-        setDataAPI(res);
-        setLoading(false)
+        const randomError = Math.random() > 0.5;
+        if (!randomError) {
+          setDataAPI(res);
+          setLoading(false);
+          setErrorAPI('')
+        } else {
+          throw new Error("API CALL ERROR!!");
+        }
+      })
+      .catch((error) => {
+        setErrorAPI(error.message);
+        setLoading(false);
       });
-  }, []);
+  }, [retry]);
+
+  function changeStateError() {
+    setRetry(!retry);
+  }
   return (
     <div className="App">
       {console.log("data", dataAPI)}
       <Header logo={data.logo} />
       {!isLoading ? (
         <>
-        <Hero
-          title={data.title}
-          image={data.cover}
-          description={data.description}
-        />
-        <Products products={dataAPI} />
-        <Footer logo={data.logo} company={data.company} year={currentYear} />
+          {!isErrorAPI && (
+            <>
+              <Hero
+                title={data.title}
+                image={data.cover}
+                description={data.description}
+              />
+              <Products products={dataAPI} />
+              <Footer
+                logo={data.logo}
+                company={data.company}
+                year={currentYear}
+              />
+            </>
+          )}
         </>
       ) : (
         <>
           <Loading />
         </>
+      )}
+      {isErrorAPI && (
+        <ErrorBanner changeStateError={changeStateError} error={isErrorAPI} />
       )}
     </div>
   );
