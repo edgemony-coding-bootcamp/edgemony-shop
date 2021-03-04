@@ -35,3 +35,17 @@
 .cardWrap:hover{
     transform: scale(1.1);
 }
+
+@media (min-width: 768px) {
+    .cardWrap{
+        height: 360px;;
+        width: 300px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .cardWrap{
+        height: 360px;;
+        width: 270px;
+    }
+  } 

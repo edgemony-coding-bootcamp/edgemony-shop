@@ -1,0 +1,27 @@
+
+.navBarCategories{
+    width:100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navBarCategories button{
+    background-color: transparent;
+    font-size: 20px;
+    color:black;
+    border:none;
+    border-radius: 20px;
+    padding:20px;
+    margin:30px;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.157);
+}
+
+.navBarCategories button:hover{
+    transform: scale(1.1);
+}
+.navBarCategories button:focus{
+    outline: none;
+}

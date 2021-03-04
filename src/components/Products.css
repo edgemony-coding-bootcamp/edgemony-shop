@@ -35,14 +35,14 @@
     outline: none;
 }
 
- /* @media (min-width: 768px) {
+ @media (min-width: 768px) {
   
   .wrapProducts{
       margin:30px 0;
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-       margin: 20px; 
+      margin: 20px; 
       justify-content: center;
       width: 100%;
       box-sizing: border-box;
@@ -54,4 +54,4 @@
 @media (min-width: 1024px) {
   
 
-}  */
+} 
