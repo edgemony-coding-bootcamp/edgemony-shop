@@ -1,11 +1,13 @@
 import "./App.css";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Products from "./components/Products";
+//import Products from "./components/Products";
 import Footer from "./components/Footer";
 import React, { useState, useEffect } from "react";
 import Loading from "./components/Loading";
 import ErrorBanner from "./components/ErrorBanner";
+//import NavBar from "./components/NavBar";
+import WrapProducts from "./components/WrapProducts";
 
 const fakeProducts = require("./mocks/data/products.json");
 const currentYear = new Date().getFullYear();
@@ -63,7 +65,7 @@ function App() {
                 image={data.cover}
                 description={data.description}
               />
-              <Products products={dataAPI} />
+              <WrapProducts products={dataAPI}/>
               <Footer
                 logo={data.logo}
                 company={data.company}
