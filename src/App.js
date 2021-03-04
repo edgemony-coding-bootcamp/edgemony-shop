@@ -6,6 +6,7 @@ import Hero from "./components/Hero";
 import Loader from "./components/Loader";
 import ProductList from "./components/ProductList";
 import ProductModal from "./components/ProductModal";
+import ErrorBanner from "./components/ErrorBanner";
 
 const data = {
   title: "Edgemony Shop",
@@ -52,17 +53,14 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
+    setApiError("");
     fetch("https://fakestoreapi.com/products")
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);
         setIsLoading(false);
-        setApiError("");
       })
-      .catch((err) => {
-        setApiError(err.message);
-        setIsLoading(false);
-      });
+      .catch((err) => setApiError(err.message));
   }, [retry]);
 
   return (
@@ -76,21 +74,17 @@ function App() {
       <main>
         {isLoading ? (
           <Loader />
+        ) : apiError ? (
+          <ErrorBanner
+            message={apiError}
+            close={() => setApiError("")}
+            retry={() => setRetry(!retry)}
+          />
         ) : (
-          !apiError && (
-            <ProductList
-              products={products}
-              openProductModal={openProductModal}
-            />
-          )
-        )}
-        {apiError && (
-          <div>
-            <span>{apiError}</span>
-            <button type="button" onClick={() => setRetry(!retry)}>
-              Retry
-            </button>
-          </div>
+          <ProductList
+            products={products}
+            openProductModal={openProductModal}
+          />
         )}
       </main>
       <ProductModal
