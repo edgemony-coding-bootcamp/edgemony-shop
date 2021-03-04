@@ -33,6 +33,16 @@ function App() {
     }, 500)
   }
 
+  useEffect(() => {
+    if (modalIsOpen) {
+      document.body.style.height = `100vh`
+      document.body.style.overflow = `hidden`
+    } else {
+      document.body.style.height = ``
+      document.body.style.overflow = ``
+    }
+  }, [ modalIsOpen ])
+
   // API data logic
   const [ products, setProducts ] = useState([])
   const [ isLoading, setIsLoading] = useState(false)
