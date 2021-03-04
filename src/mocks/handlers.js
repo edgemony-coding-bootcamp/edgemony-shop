@@ -2,17 +2,8 @@ import { rest } from "msw";
 const products = require("./data/products.json");
 const categories = require("./data/categories.json");
 
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
-}
-
 function randomError(resolverFn) {
   return function (req, res, ctx) {
-    sleep(2000);
     if (Math.random() > 0.6) {
       return res(
         ctx.status(500),
