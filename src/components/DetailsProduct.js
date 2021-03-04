@@ -14,6 +14,8 @@ export default function DetailsProduct(props) {
             <h2>{title}</h2>
             <img src={image} alt="product" />
             <p>{description}</p>
+            <hr></hr>
+            <br></br>
             <span>Price: € {price.toFixed(2)}</span>
         </div>
       </div>
