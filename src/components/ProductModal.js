@@ -11,7 +11,7 @@ function ProductModal({ content, closeModal, isOpen }) {
         { !!content ? (
           <div className="content">
             <img src={content.image} alt={content.title} />
-            <h1>{content.title}</h1>
+            <h2>{content.title}</h2>
             <p>{content.description}</p>
             <hr />
             <div className="price"><small>Price:</small> {content.price}€</div>
