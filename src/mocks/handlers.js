@@ -13,8 +13,11 @@ function sleep(milliseconds) {
 function randomError(resolverFn) {
   return function (req, res, ctx) {
     sleep(2000);
-    if (Math.random() > 0.8) {
-      return res(ctx.status(500));
+    if (Math.random() > 0.6) {
+      return res(
+        ctx.status(500),
+        ctx.json({ message: "An expected error occurred" })
+      );
     }
     return resolverFn(req, res, ctx);
   };

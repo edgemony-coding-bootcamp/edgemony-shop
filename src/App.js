@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 import "./App.css";
 import Header from "./components/Header";
@@ -17,57 +17,52 @@ const data = {
 
 function App() {
   // Modal logic
-  const [ productInModal, setProductInModal ] = useState(null)
-  const [ modalIsOpen, setModalIsOpen ] = useState(false)
+  const [productInModal, setProductInModal] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   function openProductModal(product) {
-    console.log(product)
-    setProductInModal(product)
-    setModalIsOpen(true)
+    console.log(product);
+    setProductInModal(product);
+    setModalIsOpen(true);
   }
 
   function closeModal() {
-    setModalIsOpen(false)
+    setModalIsOpen(false);
     setTimeout(() => {
-      setProductInModal(null)
-    }, 500)
+      setProductInModal(null);
+    }, 500);
   }
 
   useEffect(() => {
     if (modalIsOpen) {
-      document.body.style.height = `100vh`
-      document.body.style.overflow = `hidden`
+      document.body.style.height = `100vh`;
+      document.body.style.overflow = `hidden`;
     } else {
-      document.body.style.height = ``
-      document.body.style.overflow = ``
+      document.body.style.height = ``;
+      document.body.style.overflow = ``;
     }
-  }, [ modalIsOpen ])
+  }, [modalIsOpen]);
 
   // API data logic
-  const [ products, setProducts ] = useState([])
-  const [ isLoading, setIsLoading] = useState(false)
-  const [ apiError, setApiError] = useState('')
-  const [ retry, setRetry ] = useState(false)
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
+  const [retry, setRetry] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true)
-    fetch('https://fakestoreapi.com/products')
-    .then(response => response.json())
-    .then(data => {
-      const hasError = Math.random() > 0.5
-      if (!hasError) {
-        setProducts(data)
-        setIsLoading(false)
-        setApiError('')
-      } else {
-        throw new Error('Product server API call response error')
-      }
-    })
-    .catch((err) => {
-      setApiError(err.message)
-      setIsLoading(false)
-    })
-  }, [ retry ])
+    setIsLoading(true);
+    fetch("/products")
+      .then((response) => response.json())
+      .then((data) => {
+        setProducts(data);
+        setIsLoading(false);
+        setApiError("");
+      })
+      .catch((err) => {
+        setApiError(err.message);
+        setIsLoading(false);
+      });
+  }, [retry]);
 
   return (
     <div className="App">
@@ -77,18 +72,29 @@ function App() {
         description={data.description}
         cover={data.cover}
       />
-      { isLoading
-        ? <div>loading data...</div> 
-        : !apiError && <ProductList products={products} openProductModal={openProductModal}/>
-          
-      }
-      { apiError && (
+      {isLoading ? (
+        <div>loading data...</div>
+      ) : (
+        !apiError && (
+          <ProductList
+            products={products}
+            openProductModal={openProductModal}
+          />
+        )
+      )}
+      {apiError && (
         <div>
-          <span>{ apiError }</span>
-          <button type="button" onClick={() => setRetry(!retry)}>Retry</button>
+          <span>{apiError}</span>
+          <button type="button" onClick={() => setRetry(!retry)}>
+            Retry
+          </button>
         </div>
       )}
-      <ProductModal isOpen={ modalIsOpen } content={productInModal} closeModal={closeModal} />
+      <ProductModal
+        isOpen={modalIsOpen}
+        content={productInModal}
+        closeModal={closeModal}
+      />
     </div>
   );
 }
