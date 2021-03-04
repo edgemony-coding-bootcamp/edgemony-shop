@@ -31,7 +31,7 @@ function App() {
   function closeModal() {
     setModalIsOpen(false)
     setTimeout(() => {
-      setProductInModal(false)
+      setProductInModal(null)
     }, 500)
   }
   return (
