@@ -1,0 +1,8 @@
+.App main {
+  padding-top: 50px;
+}
+
+.App .Loader {
+  margin: auto;
+  display: block;
+}

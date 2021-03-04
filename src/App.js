@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import Loader from "./components/Loader";
 import ProductList from "./components/ProductList";
 import ProductModal from "./components/ProductModal";
 
@@ -72,24 +73,26 @@ function App() {
         description={data.description}
         cover={data.cover}
       />
-      {isLoading ? (
-        <div>loading data...</div>
-      ) : (
-        !apiError && (
-          <ProductList
-            products={products}
-            openProductModal={openProductModal}
-          />
-        )
-      )}
-      {apiError && (
-        <div>
-          <span>{apiError}</span>
-          <button type="button" onClick={() => setRetry(!retry)}>
-            Retry
-          </button>
-        </div>
-      )}
+      <main>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          !apiError && (
+            <ProductList
+              products={products}
+              openProductModal={openProductModal}
+            />
+          )
+        )}
+        {apiError && (
+          <div>
+            <span>{apiError}</span>
+            <button type="button" onClick={() => setRetry(!retry)}>
+              Retry
+            </button>
+          </div>
+        )}
+      </main>
       <ProductModal
         isOpen={modalIsOpen}
         content={productInModal}
