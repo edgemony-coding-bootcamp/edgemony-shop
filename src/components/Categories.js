@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Categories.css";
-import Products from "./Products"
 
-function Categories({ products }) {
+
+function Categories({ products, changeProductsRender }) {
   const [categories, setCategories] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [renderProducts,setRenderProducts]=useState(products)
+  let renderProducts=[].push(products)
+
 
   useEffect(() => {
     setLoading(true);
@@ -17,6 +18,7 @@ function Categories({ products }) {
         console.log("categories", categories);
       });
   }, []);
+  
 
   function getCategory(category) {
     const filterCategory = products.filter(
@@ -24,15 +26,24 @@ function Categories({ products }) {
     );
     return filterCategory;
   }
+  
   function filterProductsOfCategory(ev, list) {
     const productOfCategory = getCategory(ev.target.innerText);
-    setRenderProducts(productOfCategory)
+    renderProducts=productOfCategory
+    console.log("productsOnClick",renderProducts)
+    changeProductsRender(renderProducts)
+    console.log("event",ev.target.innerText)
+  }
+
+  function filterProductsOfInput (){
+
   }
   return (
     !isLoading && (
       <>
         <div className="navBarCategories">
-          {categories.map((category, index) => {
+          {/* <SearchProduct /> */}
+          {categories.map((category) => {
             return (
               <button
                 key={category}
@@ -44,7 +55,6 @@ function Categories({ products }) {
             );
           })}
         </div>
-        <Products products={renderProducts}/>
       </>
     )
   );
