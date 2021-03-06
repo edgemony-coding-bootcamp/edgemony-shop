@@ -4,13 +4,28 @@ const categories = require("./data/categories.json");
 
 const baseURL = "https://fakestoreapi.com";
 
+function getError() {
+  const errors = [
+    { status: 400, message: "The server could not understand the request." },
+    { status: 401, message: "The user is not authorized." },
+    { status: 404, message: "Resource not found." },
+    { status: 408, message: "Request timeout." },
+    {
+      status: 418,
+      message: "I'm a teapot. I cannot brew coffee, because I'm a teapot.",
+    },
+    { status: 500, message: "An expected error occurred." },
+    { status: 502, message: "Bad gateway." },
+    { status: 503, message: "The server is not ready to handle the request." },
+  ];
+  return errors[Math.floor(Math.random() * errors.length)];
+}
+
 function randomError(resolverFn) {
   return function (req, res, ctx) {
-    if (Math.random() > 0.6) {
-      return res(
-        ctx.status(500),
-        ctx.json({ message: "An expected error occurred" })
-      );
+    if (Math.random() > 0.8) {
+      const { status, message } = getError();
+      return res(ctx.status(status), ctx.json({ message }));
     }
     return resolverFn(req, res, ctx);
   };
