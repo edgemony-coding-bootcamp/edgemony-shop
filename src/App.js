@@ -7,6 +7,7 @@ import Loader from "./components/Loader";
 import ProductList from "./components/ProductList";
 import ProductModal from "./components/ProductModal";
 import ErrorBanner from "./components/ErrorBanner";
+import { fetchProducts, fetchCatogories } from "./services/api";
 
 const data = {
   title: "Edgemony Shop",
@@ -47,6 +48,7 @@ function App() {
 
   // API data logic
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [retry, setRetry] = useState(false);
@@ -54,16 +56,10 @@ function App() {
   useEffect(() => {
     setIsLoading(true);
     setApiError("");
-    fetch("https://fakestoreapi.com/products")
-      .then(async (response) => {
-        const data = await response.json();
-        if (response.status >= 400) {
-          throw new Error(data.message);
-        }
-        return data;
-      })
-      .then((data) => {
-        setProducts(data);
+    Promise.all([fetchProducts(), fetchCatogories()])
+      .then(([products, categories]) => {
+        setProducts(products);
+        setCategories(categories);
       })
       .catch((err) => setApiError(err.message))
       .finally(() => setIsLoading(false));
@@ -89,6 +85,7 @@ function App() {
         ) : (
           <ProductList
             products={products}
+            categories={categories}
             openProductModal={openProductModal}
           />
         )}

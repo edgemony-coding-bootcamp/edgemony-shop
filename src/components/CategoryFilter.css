@@ -1,0 +1,15 @@
+.CategoryFilter {
+  cursor: pointer;
+  border: 1px solid;
+  border-radius: 3px;
+  background-color: white;
+  padding: 5px 10px;
+  font-weight: bold;
+}
+.CategoryFilter.selected {
+  background-color: #45ecd2;
+}
+.CategoryFilter.selected::after {
+  content: "X";
+  margin-left: 10px;
+}
