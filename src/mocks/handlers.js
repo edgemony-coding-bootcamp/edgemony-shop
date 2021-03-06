@@ -2,6 +2,8 @@ import { rest } from "msw";
 const products = require("./data/products.json");
 const categories = require("./data/categories.json");
 
+const baseURL = "https://fakestoreapi.com";
+
 function randomError(resolverFn) {
   return function (req, res, ctx) {
     if (Math.random() > 0.6) {
@@ -16,7 +18,7 @@ function randomError(resolverFn) {
 
 export const handlers = [
   rest.get(
-    "/products",
+    `${baseURL}/products`,
     randomError(function orderItems(req, res, ctx) {
       const q = req.url.searchParams.get("q");
       const limit = parseInt(req.url.searchParams.get("limit"));
@@ -34,13 +36,13 @@ export const handlers = [
     })
   ),
   rest.get(
-    "/products/categories",
+    `${baseURL}/products/categories`,
     randomError(function orderItems(req, res, ctx) {
       return res(ctx.status(200), ctx.json(categories));
     })
   ),
   rest.get(
-    "/products/categories/:category",
+    `${baseURL}/products/categories/:category`,
     randomError(function orderItems(req, res, ctx) {
       const { category } = req.params;
       const filteredProducts = products.filter((p) => p.category === category);
@@ -48,7 +50,7 @@ export const handlers = [
     })
   ),
   rest.get(
-    "/products/:productId",
+    `${baseURL}/products/:productId`,
     randomError(function orderItems(req, res, ctx) {
       const { productId } = req.params;
       const product = products.find((p) => p.id + "" === productId);
