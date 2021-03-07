@@ -1,0 +1,29 @@
+
+.navBarBtn button{
+    font-size: 15px;
+    border:none;
+    border-radius: 20px;
+    padding:20px;
+    margin:30px;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.157);
+    cursor: pointer;
+}
+
+.isActive{
+    background-color: green;
+    color:white;
+}
+
+.isNotActive{
+    background-color: transparent;
+    color:black;
+ 
+    
+}
+
+.navBarBtn button:hover{
+    transform: scale(1.1);
+}
+.navBarBtn button:focus{
+    outline: none;
+}
