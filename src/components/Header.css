@@ -1,12 +1,47 @@
-.Header{
-    width: 100%;
-    height: 12vh;
-    display:flex;
-    align-items: center;
-    background: rgb(78,200,209);
-    background: linear-gradient(180deg, rgba(78,200,209,1) 2%, rgba(81,157,163,1) 86%);
+.Header {
+  width: 100%;
+  height: 12vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgb(78, 200, 209);
+  background: linear-gradient(
+    180deg,
+    rgba(78, 200, 209, 1) 2%,
+    rgba(81, 157, 163, 1) 86%
+  );
+  box-sizing: border-box;
 }
 
-.Header img{
-    height: 60%;
+.Header img {
+  height: 60%;
+}
+
+.Header button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 10px;
+  padding-right: 50px;
+  font-size: 30px;
+}
+
+.Header button:hover {
+  color: rgb(255, 157, 0);
+  transition: color 0.3s;
+  transform: scale(1.1);
+}
+
+#numItemsCart{
+    font-size: 80%;
+    color:red
+}
+
+#totalPrice{
+    color: rgb(255, 157, 0);
+    font-weight: bolder;
+    letter-spacing: 2px;
+    font-size: 20px;
 }

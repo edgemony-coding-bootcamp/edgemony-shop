@@ -11,7 +11,8 @@ function Products(props) {
             <>
               <CardProduct
                 key={item.id}
-                product={item}    
+                product={item} 
+                setCart={props.setCart}   
               />
             </>
           );

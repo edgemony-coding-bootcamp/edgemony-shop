@@ -5,7 +5,7 @@ import RenderProducts from "./RenderProducts"
 import SearchProduct from './SearchProduct';
 import "./WrapProducts.css"
 
-function WrapProducts({products}) {
+function WrapProducts({products,setCart}) {
     const [productsRender, setProductsRender] =useState(products);
     const [isActiveSearch, setActiveSearch]=useState(false)
     const [isActiveCategory, setActiveCategory]=useState(false)
@@ -16,7 +16,7 @@ function WrapProducts({products}) {
           <SearchProduct products={productsRender} productsRenderToSearch={setProductsRenderToSearch} activeSearch={setActiveSearch}/> 
           <Categories products={products}  changeProductsRender={setProductsRender} activeCategory={setActiveCategory}/> 
           {/* {isActiveSearch && <RenderProducts products={productsRenderToSearch}/>} */}
-          {isActiveCategory ? <RenderProducts products={productsRender}/> :<RenderProducts products={products}/> }
+          {isActiveCategory ? <RenderProducts setCart={setCart} products={productsRender}/> :<RenderProducts setCart={setCart}products={products}/> }
         </div>
     )
 }

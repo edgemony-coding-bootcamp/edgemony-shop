@@ -8,6 +8,7 @@ import Loading from "./components/Loading";
 import ErrorBanner from "./components/ErrorBanner";
 //import NavBar from "./components/NavBar";
 import WrapProducts from "./components/WrapProducts";
+import { fetchProducts, fetchCatogories } from "./services/api";
 
 const fakeProducts = require("./mocks/data/products.json");
 const currentYear = new Date().getFullYear();
@@ -28,6 +29,7 @@ function App() {
   const [isLoading, setLoading] = useState(false);
   const [isErrorAPI, setErrorAPI] = useState(false);
   const [retry, setRetry] = useState(false);
+  const [cart,setCart]=useState([])
 
   useEffect(() => {
     setLoading(true);
@@ -49,13 +51,28 @@ function App() {
       });
   }, [retry]);
 
+  useEffect(() => {
+    setLoading(true);
+    setErrorAPI("");
+    Promise.all([fetchProducts(), fetchCatogories()])
+      .then(([products, categories]) => {
+        setDataAPI(products);
+        //categories
+      })
+      .catch((err) => setErrorAPI(err.message))
+      .finally(() => setLoading(false));
+  }, [retry]);
+
+
   function changeStateError() {
     setRetry(!retry);
   }
+
+
   return (
     <div className="App">
       {console.log("data", dataAPI)}
-      <Header logo={data.logo} />
+      <Header logo={data.logo} cart={cart} />
       {!isLoading ? (
         <>
           {!isErrorAPI && (
@@ -65,7 +82,7 @@ function App() {
                 image={data.cover}
                 description={data.description}
               />
-              <WrapProducts products={dataAPI}/>
+              <WrapProducts products={dataAPI} setCart={setCart}/>
               <Footer
                 logo={data.logo}
                 company={data.company}

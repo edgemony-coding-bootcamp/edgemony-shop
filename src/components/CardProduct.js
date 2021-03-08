@@ -6,6 +6,7 @@ import React, { useState } from "react";
 function CardProduct(props) {
   const { title, image, price } = props.product;
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  
 
   function handleClick() {
     setModalIsOpen(true);
@@ -26,10 +27,17 @@ function CardProduct(props) {
   return (
     <>
       {renderProduct()}
-      {modalIsOpen?
-      <DetailsProduct data={props.product} isOpen={()=>{setModalIsOpen(false)}}/>:
-      <></>
-      }
+      {modalIsOpen ? (
+        <DetailsProduct
+          setCart={props.setCart}
+          data={props.product}
+          isOpen={() => {
+            setModalIsOpen(false);
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 }
