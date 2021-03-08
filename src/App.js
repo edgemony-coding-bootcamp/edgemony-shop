@@ -55,12 +55,18 @@ function App() {
     setIsLoading(true);
     setApiError("");
     fetch("https://fakestoreapi.com/products")
-      .then((response) => response.json())
+      .then(async (response) => {
+        const data = await response.json();
+        if (response.status >= 400) {
+          throw new Error(data.message);
+        }
+        return data;
+      })
       .then((data) => {
         setProducts(data);
-        setIsLoading(false);
       })
-      .catch((err) => setApiError(err.message));
+      .catch((err) => setApiError(err.message))
+      .finally(() => setIsLoading(false));
   }, [retry]);
 
   return (
