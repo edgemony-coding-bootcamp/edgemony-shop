@@ -7,13 +7,16 @@ import "./WrapProducts.css"
 
 function WrapProducts({products}) {
     const [productsRender, setProductsRender] =useState(products);
-    const [productsActive, setProductsActive]=useState(undefined)
+    const [isActiveSearch, setActiveSearch]=useState(false)
+    const [isActiveCategory, setActiveCategory]=useState(false)
+    const [productsRenderToSearch,setProductsRenderToSearch]=useState(products)
     return (
         <div className="WrapProducts">
           {/* {productsActive &&<Categories products={productsActive}  changeProductsRender={setProductsRender} productsActive={setProductsActive}/>*/}
-          <SearchProduct products={products} productsRender={setProductsRender}/> 
-          <Categories products={products}  changeProductsRender={setProductsRender} productsActive={setProductsActive}/> 
-          <RenderProducts products={productsRender}/>
+          <SearchProduct products={productsRender} productsRenderToSearch={setProductsRenderToSearch} activeSearch={setActiveSearch}/> 
+          <Categories products={products}  changeProductsRender={setProductsRender} activeCategory={setActiveCategory}/> 
+          {/* {isActiveSearch && <RenderProducts products={productsRenderToSearch}/>} */}
+          {isActiveCategory ? <RenderProducts products={productsRender}/> :<RenderProducts products={products}/> }
         </div>
     )
 }

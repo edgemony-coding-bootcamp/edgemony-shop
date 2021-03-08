@@ -1,12 +1,13 @@
 import "./SearchProduct.css"
 import React, { useState,useEffect } from "react";
 
-function SearchProduct({ products, productsRender }) {
+function SearchProduct({ products, productsRenderToSearch,activeSearch }) {
   const [inputUser, setInput] = useState("");
   const [productsSearch, setProductsSearch] = useState([]);
   const [isActiveSearch,setActiveSearch]=useState(false)
 
   function search(e) {
+    activeSearch(false)
     console.log(e.target.value);
     const target = e.target.value;
     setInput(target);
@@ -15,7 +16,8 @@ function SearchProduct({ products, productsRender }) {
 
   useEffect(() => {
     const results=filterProductsSearch()
-    productsRender(results)
+    productsRenderToSearch(results)
+    activeSearch(true)
   }, [inputUser])
 
   function filterProductsSearch() {

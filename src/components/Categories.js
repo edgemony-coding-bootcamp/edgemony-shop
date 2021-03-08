@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import BtnCategory from "./BtnCategory";
 import "./Categories.css";
 
-function Categories({ products, changeProductsRender, productsActive }) {
+function Categories({ products, changeProductsRender, activeCategory }) {
   const [categories, setCategories] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [AllProductsToRender,setAllProductsToRender]=useState([])
-  
+  const [countBtnActive,setcountBtnActive]=useState(0)
+  //activeCategory(false)
+
   useEffect(() => {
     setLoading(true);
     const controller = new AbortController();
@@ -24,6 +26,14 @@ function Categories({ products, changeProductsRender, productsActive }) {
       }; 
   }, []);
 
+  useEffect(() => {
+    console.log("ciao",countBtnActive)
+    if(AllProductsToRender.length>1){
+      console.log("final",AllProductsToRender)
+      activeCategory(true)
+      changeProductsRender(AllProductsToRender)
+    }
+  }, [AllProductsToRender])
   return (
     !isLoading ? (
       <>
@@ -36,10 +46,11 @@ function Categories({ products, changeProductsRender, productsActive }) {
                  key={category}
                  category={category.toUpperCase()}
                  products={products}
-                 productsActive={productsActive}
+                 activeCategory={activeCategory}
                  changeProductsRender={changeProductsRender}
                  setAllProductsToRender={setAllProductsToRender}
                  AllProductsToRender={AllProductsToRender}
+                 setcountBtnActive={setcountBtnActive}
                />
               </>
             );

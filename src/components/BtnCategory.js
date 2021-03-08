@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./BtnCategory.css";
 
 function BtnCategory({
   category,
-  productsActive,
   products,
-  changeProductsRender,
   setAllProductsToRender,
   AllProductsToRender,
+  setcountBtnActive
 }) {
   const [isActive, setActive] = useState(false);
   const [productsOfCategories, setProductsOfCategory] = useState([]);
-  const [isTrue,setTrue]=useState(false)
-  console.log("AllProducts", AllProductsToRender);
+ 
 
   function getCategory(category) {
     const filterCategory = products.filter(
@@ -20,50 +18,43 @@ function BtnCategory({
     );
     return filterCategory;
   }
-  // function includesProduct(list, product) {
-  //   return list.includes(product.category);
-  //   };
+
+  useEffect(() => {
+    const prova = createArrayToSendToRender();
+    console.log("bo", prova);
   
+  }, [isActive]);
 
   function filterProductsOfCategory(ev) {
-    const productsOfCategory = getCategory(ev.target.innerText);
+    setProductsOfCategory(getCategory(ev.target.innerText));
     setActive(!isActive);
-
-    console.log("boo", productsOfCategory);
-    setProductsOfCategory([...productsOfCategories, productsOfCategory]);
-    console.log("boo3", productsOfCategory);
-
-    productsOfCategory.map((product, index) => {
-      // if(!isActive){
-        /** */
-      
-      if(AllProductsToRender.length>1 && isActive){
-          AllProductsToRender.filter(prod => {
-          if(prod.category.includes(product.category)){
-            setActive(true)
-          }
-          
-          console.log("bool",!prod.category.includes(product.category))
-          setAllProductsToRender((previousState) => [
-            ...previousState,
-            { ...product },
-        ]);
-        })
-      }
-      else{
-        setAllProductsToRender((previousState) => [
-          ...previousState,
-          { ...product },
-        ]);
-      }
-      
-      // if()&&AllProductsToRender.length>1){
-        
-      // }
-
-      // }
-    });
   }
+
+  function createArrayToSendToRender() {
+    if (isActive) {
+      if (AllProductsToRender.length > 1 && productsOfCategories.length > 1) {
+        const filterArray = productsOfCategories.filter((prod, index) => {
+          if (
+            !prod.category.includes(
+              prod.category[(0, AllProductsToRender.length)]
+              ) === false
+              ) {
+                setAllProductsToRender((previousState) => [
+                  ...previousState,
+              { ...productsOfCategories[index] },
+            ]);
+          }
+        });
+      } else {
+        setAllProductsToRender(productsOfCategories);
+      }
+      setcountBtnActive((previousState) => [
+        parseInt(previousState)+1
+      ])
+    }
+    return AllProductsToRender;
+  }
+
   return (
     <div className="navBarBtn">
       <button
