@@ -5,8 +5,7 @@ function BtnCategory({
   category,
   products,
   setAllProductsToRender,
-  AllProductsToRender,
-  setcountBtnActive
+  AllProductsToRender
 }) {
   const [isActive, setActive] = useState(false);
   const [productsOfCategories, setProductsOfCategory] = useState([]);
@@ -21,7 +20,7 @@ function BtnCategory({
 
   useEffect(() => {
     const prova = createArrayToSendToRender();
-    console.log("bo", prova);
+    console.log("effectBtn", prova);
   
   }, [isActive]);
 
@@ -48,10 +47,11 @@ function BtnCategory({
       } else {
         setAllProductsToRender(productsOfCategories);
       }
-      setcountBtnActive((previousState) => [
-        parseInt(previousState)+1
-      ])
+      // setcountBtnActive((previousState) => [
+      //   parseInt(previousState)+1
+      // ])
     }
+
     return AllProductsToRender;
   }
 

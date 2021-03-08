@@ -6,7 +6,7 @@ function Categories({ products, changeProductsRender, activeCategory }) {
   const [categories, setCategories] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [AllProductsToRender,setAllProductsToRender]=useState([])
-  const [countBtnActive,setcountBtnActive]=useState(0)
+  
   //activeCategory(false)
 
   useEffect(() => {
@@ -27,7 +27,7 @@ function Categories({ products, changeProductsRender, activeCategory }) {
   }, []);
 
   useEffect(() => {
-    console.log("ciao",countBtnActive)
+    
     if(AllProductsToRender.length>1){
       console.log("final",AllProductsToRender)
       activeCategory(true)
@@ -50,7 +50,6 @@ function Categories({ products, changeProductsRender, activeCategory }) {
                  changeProductsRender={changeProductsRender}
                  setAllProductsToRender={setAllProductsToRender}
                  AllProductsToRender={AllProductsToRender}
-                 setcountBtnActive={setcountBtnActive}
                />
               </>
             );

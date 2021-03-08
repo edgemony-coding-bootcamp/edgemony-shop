@@ -12,7 +12,7 @@ function WrapProducts({products}) {
     const [productsRenderToSearch,setProductsRenderToSearch]=useState(products)
     return (
         <div className="WrapProducts">
-          {/* {productsActive &&<Categories products={productsActive}  changeProductsRender={setProductsRender} productsActive={setProductsActive}/>*/}
+    
           <SearchProduct products={productsRender} productsRenderToSearch={setProductsRenderToSearch} activeSearch={setActiveSearch}/> 
           <Categories products={products}  changeProductsRender={setProductsRender} activeCategory={setActiveCategory}/> 
           {/* {isActiveSearch && <RenderProducts products={productsRenderToSearch}/>} */}
