@@ -1,70 +1,27 @@
-import React, { useEffect, useState } from "react";
 import "./BtnCategory.css";
 
-function BtnCategory({
-  category,
-  products,
-  setAllProductsToRender,
-  AllProductsToRender
-}) {
-  const [isActive, setActive] = useState(false);
-  const [productsOfCategories, setProductsOfCategory] = useState([]);
- 
-
-  function getCategory(category) {
-    const filterCategory = products.filter(
-      (product) => product.category.toUpperCase() === category
-    );
-    return filterCategory;
-  }
-
-  useEffect(() => {
-    const prova = createArrayToSendToRender();
-    console.log("effectBtn", prova);
+function BtnCategory({ name, selectedCategories, onSelectCategory }) {
+  const isSelected = selectedCategories.includes(name);
+  const className = (isSelected ? "isSelected" : "");
   
-  }, [isActive]);
+  const toggleCategory = () => {
+    const newSelected = isSelected
+      ? selectedCategories.filter((category) => category !== name)
+      : [...selectedCategories, name];
+    onSelectCategory(newSelected);
+  };
 
-  function filterProductsOfCategory(ev) {
-    setProductsOfCategory(getCategory(ev.target.innerText));
-    setActive(!isActive);
-  }
-
-  function createArrayToSendToRender() {
-    if (isActive) {
-      if (AllProductsToRender.length > 1 && productsOfCategories.length > 1) {
-        const filterArray = productsOfCategories.filter((prod, index) => {
-          if (
-            !prod.category.includes(
-              prod.category[(0, AllProductsToRender.length)]
-              ) === false
-              ) {
-                setAllProductsToRender((previousState) => [
-                  ...previousState,
-              { ...productsOfCategories[index] },
-            ]);
-          }
-        });
-      } else {
-        setAllProductsToRender(productsOfCategories);
-      }
-      // setcountBtnActive((previousState) => [
-      //   parseInt(previousState)+1
-      // ])
-    }
-
-    return AllProductsToRender;
-  }
 
   return (
     <div className="navBarBtn">
       <button
-        className={isActive ? "isActive" : "isNotActive"}
-        id={category}
-        key={category}
+        className={className}
+        id={name}
+        key={name}
         type="button"
-        onClick={(ev) => filterProductsOfCategory(ev, products)}
+        onClick={toggleCategory }
       >
-        {category}
+        {name}
       </button>
     </div>
   );

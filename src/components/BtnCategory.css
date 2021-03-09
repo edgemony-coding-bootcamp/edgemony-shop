@@ -9,7 +9,7 @@
     cursor: pointer;
 }
 
-.isActive{
+.isSelected{
     background-color: green;
     color:white;
 }

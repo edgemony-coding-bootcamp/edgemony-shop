@@ -1,24 +1,40 @@
+import Categories from "./Categories";
+import { useState } from "react";
+import RenderProducts from "./RenderProducts";
+import SearchProduct from "./SearchProduct";
+import "./WrapProducts.css";
 
-import Categories from './Categories'
-import { useState } from 'react';
-import RenderProducts from "./RenderProducts"
-import SearchProduct from './SearchProduct';
-import "./WrapProducts.css"
+function WrapProducts({ products, setCart }) {
+  const [inputUser, setInputUser] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  
 
-function WrapProducts({products,setCart}) {
-    const [productsRender, setProductsRender] =useState(products);
-    const [isActiveSearch, setActiveSearch]=useState(false)
-    const [isActiveCategory, setActiveCategory]=useState(false)
-    const [productsRenderToSearch,setProductsRenderToSearch]=useState(products)
-    return (
-        <div className="WrapProducts">
-    
-          <SearchProduct products={productsRender} productsRenderToSearch={setProductsRenderToSearch} activeSearch={setActiveSearch}/> 
-          <Categories products={products}  changeProductsRender={setProductsRender} activeCategory={setActiveCategory}/> 
-          {/* {isActiveSearch && <RenderProducts products={productsRenderToSearch}/>} */}
-          {isActiveCategory ? <RenderProducts setCart={setCart} products={productsRender}/> :<RenderProducts setCart={setCart}products={products}/> }
-        </div>
-    )
+  function search(e) {
+    console.log(e.target.value);
+    const target = e.target.value;
+    setInputUser(target.toUpperCase());
+  }
+  
+  const filteredProducts=products.filter((product)=>
+   (inputUser) ?
+   product.title.toUpperCase().indexOf(inputUser)!==-1 && (selectedCategories.length===0 ||selectedCategories.includes(product.category) )
+   : 
+   selectedCategories.length>0?selectedCategories.includes(product.category) :product)
+  
+
+  return (
+    <div className="WrapProducts">
+      <SearchProduct
+       search={search}
+      />
+      <Categories
+        products={products}
+        selectedCategories={selectedCategories}
+        onSelectCategory={setSelectedCategories}
+      />
+      <RenderProducts products={filteredProducts} setCart={setCart}/>
+    </div>
+  );
 }
 
-export default WrapProducts
+export default WrapProducts;
