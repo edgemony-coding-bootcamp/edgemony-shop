@@ -12,13 +12,12 @@ function WrapProducts({ products, setCart }) {
   function search(e) {
     console.log(e.target.value);
     const target = e.target.value;
-    setInputUser(target);
+    setInputUser(target.toUpperCase());
   }
   
   const filteredProducts=products.filter((product)=>
-    ((inputUser ? (selectedCategories.length===0 ?product.title.toUpperCase().includes(inputUser.toUpperCase()):
-    selectedCategories.includes(product.category)):(selectedCategories.length===0 ? product :selectedCategories.includes(product.category) ))
-  ))
+   product.title.toUpperCase().indexOf(inputUser)!==-1 && (selectedCategories.length===0 ||selectedCategories.includes(product.category) ))
+  
 
   return (
     <div className="WrapProducts">
