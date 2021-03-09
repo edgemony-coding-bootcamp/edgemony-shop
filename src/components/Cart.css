@@ -1,0 +1,20 @@
+.Cart {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.Cart__content {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.Cart__content__empty {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.Cart footer {
+  text-align: center;
+}
