@@ -16,7 +16,10 @@ function WrapProducts({ products, setCart }) {
   }
   
   const filteredProducts=products.filter((product)=>
-   product.title.toUpperCase().indexOf(inputUser)!==-1 && (selectedCategories.length===0 ||selectedCategories.includes(product.category) ))
+   (inputUser) ?
+   product.title.toUpperCase().indexOf(inputUser)!==-1 && (selectedCategories.length===0 ||selectedCategories.includes(product.category) )
+   : 
+   selectedCategories.length>0?selectedCategories.includes(product.category) :product)
   
 
   return (

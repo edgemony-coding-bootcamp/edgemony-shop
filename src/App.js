@@ -9,6 +9,7 @@ import ErrorBanner from "./components/ErrorBanner";
 //import NavBar from "./components/NavBar";
 import WrapProducts from "./components/WrapProducts";
 import { fetchProducts, fetchCatogories } from "./services/api";
+import CartModal from "./components/CartModal";
 
 const fakeProducts = require("./mocks/data/products.json");
 const currentYear = new Date().getFullYear();
@@ -30,6 +31,7 @@ function App() {
   const [isErrorAPI, setErrorAPI] = useState(false);
   const [retry, setRetry] = useState(false);
   const [cart,setCart]=useState([])
+  const [isOpenModalCart,setOpenModalCart]= useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -67,16 +69,26 @@ function App() {
   function changeStateError() {
     setRetry(!retry);
   }
+  
+  function openModalCart() {
+    setOpenModalCart(true);
+  }
 
+  function closeModalCart() {
+    setOpenModalCart(false);
+  }
 
   return (
     <div className="App">
       {console.log("data", dataAPI)}
-      <Header logo={data.logo} cart={cart} />
+      <Header logo={data.logo} cart={cart} 
+                openModal={openModalCart}/>
       {!isLoading ? (
         <>
           {!isErrorAPI && (
             <>
+              <CartModal isOpen={isOpenModalCart} closeModal={closeModalCart} cart={cart}
+              />
               <Hero
                 title={data.title}
                 image={data.cover}
