@@ -65,9 +65,12 @@ function App() {
       .finally(() => setIsLoading(false));
   }, [retry]);
 
+  // Cart Logic
+  const [ cart, setCart ] = useState([])
+
   return (
     <div className="App">
-      <Header logo={data.logo} title={data.title} />
+      <Header logo={data.logo} title={data.title} cart={cart} products={products} />
       <Hero
         title={data.title}
         description={data.description}
@@ -94,6 +97,8 @@ function App() {
         isOpen={modalIsOpen}
         content={productInModal}
         closeModal={closeModal}
+        cart={cart}
+        setCart={setCart}
       />
     </div>
   );
