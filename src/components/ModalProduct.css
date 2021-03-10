@@ -1,4 +1,4 @@
-.ProductModal {
+.ModalProduct {
   position: fixed;
   top: 0;
   left: 0;
@@ -8,14 +8,15 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  z-index: 1000;
 }
 
-.ProductModal.isOpen {
+.ModalProduct.isOpen {
   opacity: 1;
   pointer-events: auto;
 }
 
-.ProductModal .overlay {
+.ModalProduct .overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -27,12 +28,15 @@
   opacity: 0;
 }
 
-.ProductModal.isOpen .overlay {
+.ModalProduct.isOpen .overlay {
   opacity: 1;
 }
 
-.ProductModal .body {
+.ModalProduct .body {
   max-width: 520px;
+  max-height: 90vh;
+  box-sizing: border-box;
+  overflow: auto;
   width: calc(100% - 20px - 20px);
   border-radius: 5px;
   background-color: #fff;
@@ -46,19 +50,19 @@
   transition: opacity 0.5s ease-in-out, transform 0.333s ease-out;
 }
 
-.ProductModal.isOpen .body {
+.ModalProduct.isOpen .body {
   opacity: 1;
   transform: translateY(0);
 }
 
-.ProductModal img {
+.ModalProduct img {
   width: 100%;
   height: 300px;
   object-fit: contain;
   object-position: center;
 }
 
-.ProductModal .close {
+.ModalProduct .close {
   position: absolute;
   top: 30px;
   right: 30px;
@@ -66,13 +70,13 @@
   font-size: 24px;
 }
 
-.ProductModal .price {
+.ModalProduct .price {
   font-size: 24px;
   text-align: right;
   font-weight: bold;
 }
 
-.ProductModal .price small {
+.ModalProduct .price small {
   font-size: 18px;
   font-weight: normal;
 }

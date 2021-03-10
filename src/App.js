@@ -5,8 +5,9 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Loader from "./components/Loader";
 import ProductList from "./components/ProductList";
-import ProductModal from "./components/ProductModal";
+import ProductModal from "./components/ModalProduct";
 import ErrorBanner from "./components/ErrorBanner";
+import CartModal from "./components/ModalCart";
 import { fetchProducts, fetchCatogories } from "./services/api";
 
 const data = {
@@ -22,6 +23,7 @@ function App() {
   // Modal logic
   const [productInModal, setProductInModal] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isCartOpen, setCartOpen] = useState(false);
 
   function openProductModal(product) {
     console.log(product);
@@ -37,14 +39,14 @@ function App() {
   }
 
   useEffect(() => {
-    if (modalIsOpen) {
+    if (modalIsOpen || isCartOpen) {
       document.body.style.height = `100vh`;
       document.body.style.overflow = `hidden`;
     } else {
       document.body.style.height = ``;
       document.body.style.overflow = ``;
     }
-  }, [modalIsOpen]);
+  }, [modalIsOpen, isCartOpen]);
 
   // API data logic
   const [products, setProducts] = useState([]);
@@ -66,11 +68,44 @@ function App() {
   }, [retry]);
 
   // Cart Logic
-  const [ cart, setCart ] = useState([])
+  const [cart, setCart] = useState([]);
+  const cartProducts = cart.map((cartItem) => {
+    const { price, image, title, id } = products.find(
+      (p) => p.id === cartItem.id
+    );
+    return { price, image, title, id, quantity: cartItem.quantity };
+  });
+  const cartTotal = cartProducts.reduce(
+    (total, product) => total + product.price * product.quantity,
+    0
+  );
+  function isInCart(product) {
+    return product != null && cart.find((p) => p.id === product.id) != null;
+  }
+  function addToCart(productId) {
+    setCart([...cart, { id: productId, quantity: 1 }]);
+  }
+  function removeFromCart(productId) {
+    setCart(cart.filter((product) => product.id !== productId));
+  }
+  function setProductQuantity(productId, quantity) {
+    setCart(
+      cart.map((product) =>
+        product.id === productId ? { ...product, quantity } : product
+      )
+    );
+  }
 
   return (
     <div className="App">
-      <Header logo={data.logo} title={data.title} cart={cart} products={products} />
+      <Header
+        logo={data.logo}
+        title={data.title}
+        cartTotal={cartTotal}
+        cartSize={cart.length}
+        products={products}
+        onCartClick={() => setCartOpen(true)}
+      />
       <Hero
         title={data.title}
         description={data.description}
@@ -93,12 +128,21 @@ function App() {
           />
         )}
       </main>
+      <CartModal
+        products={cartProducts}
+        isOpen={isCartOpen}
+        close={() => setCartOpen(false)}
+        totalPrice={cartTotal}
+        removeFromCart={removeFromCart}
+        setProductQuantity={setProductQuantity}
+      />
       <ProductModal
         isOpen={modalIsOpen}
         content={productInModal}
         closeModal={closeModal}
-        cart={cart}
-        setCart={setCart}
+        inCart={isInCart(productInModal)}
+        addToCart={addToCart}
+        removeFromCart={removeFromCart}
       />
     </div>
   );

@@ -1,0 +1,11 @@
+.CartProduct {
+  margin: 20px 0 30px;
+}
+
+.CartProduct img {
+  height: 100px;
+}
+
+.CartProduct__quantity span {
+  margin: 0 5px;
+}
