@@ -10,6 +10,7 @@ import ErrorBanner from "./components/ErrorBanner";
 import WrapProducts from "./components/WrapProducts";
 import { fetchProducts, fetchCatogories } from "./services/api";
 import CartModal from "./components/CartModal";
+import ProductModal from "./components/ProductModal";
 
 const fakeProducts = require("./mocks/data/products.json");
 const currentYear = new Date().getFullYear();
@@ -30,9 +31,27 @@ function App() {
   const [isLoading, setLoading] = useState(false);
   const [isErrorAPI, setErrorAPI] = useState(false);
   const [retry, setRetry] = useState(false);
-  const [cart,setCart]=useState([])
-  const [isOpenModalCart,setOpenModalCart]= useState(false);
+  const [cart, setCart] = useState([]);
+  const [isOpenModalCart, setOpenModalCart] = useState(false);
 
+  /***********MODAL LOGIC********* */
+  const [productInModal, setProductInModal] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  function openProductModal(product) {
+    console.log(product);
+    setProductInModal(product);
+    setModalIsOpen(true);
+  }
+
+  function closeModal() {
+    setModalIsOpen(false);
+    setTimeout(() => {
+      setProductInModal(null);
+    }, 500);
+  }
+
+  /***********END MODAL LOGIC****************** */
   useEffect(() => {
     setLoading(true);
     fetch("https://fakestoreapi.com/products")
@@ -42,7 +61,7 @@ function App() {
         if (!randomError) {
           setDataAPI(res);
           setLoading(false);
-          setErrorAPI('')
+          setErrorAPI("");
         } else {
           throw new Error("API CALL ERROR!!");
         }
@@ -65,11 +84,10 @@ function App() {
       .finally(() => setLoading(false));
   }, [retry]);
 
-
   function changeStateError() {
     setRetry(!retry);
   }
-  
+
   function openModalCart() {
     setOpenModalCart(true);
   }
@@ -80,21 +98,30 @@ function App() {
 
   return (
     <div className="App">
-      {console.log("data", dataAPI)}
-      <Header logo={data.logo} cart={cart} 
-                openModal={openModalCart}/>
+      <Header logo={data.logo} cart={cart} openModal={openModalCart} />
       {!isLoading ? (
         <>
           {!isErrorAPI && (
             <>
-              <CartModal isOpen={isOpenModalCart} closeModal={closeModalCart} cart={cart}
+              <CartModal
+                isOpen={isOpenModalCart}
+                closeModal={closeModalCart}
+                cart={cart}
+              />
+              <ProductModal
+                isOpen={modalIsOpen}
+                content={productInModal}
+                closeModal={closeModal}
+                //inCart={isInCart(productInModal)}
+                //addToCart={addToCart}
+                //removeFromCart={removeFromCart}
               />
               <Hero
                 title={data.title}
                 image={data.cover}
                 description={data.description}
               />
-              <WrapProducts products={dataAPI} setCart={setCart}/>
+              <WrapProducts products={dataAPI} openProductModal={openProductModal} />
               <Footer
                 logo={data.logo}
                 company={data.company}

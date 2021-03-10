@@ -4,7 +4,7 @@ import RenderProducts from "./RenderProducts";
 import SearchProduct from "./SearchProduct";
 import "./WrapProducts.css";
 
-function WrapProducts({ products, setCart }) {
+function WrapProducts({ products, openProductModal }) {
   const [inputUser, setInputUser] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   
@@ -32,7 +32,7 @@ function WrapProducts({ products, setCart }) {
         selectedCategories={selectedCategories}
         onSelectCategory={setSelectedCategories}
       />
-      <RenderProducts products={filteredProducts} setCart={setCart}/>
+      <RenderProducts products={filteredProducts} openProductModal={openProductModal}/>
     </div>
   );
 }
