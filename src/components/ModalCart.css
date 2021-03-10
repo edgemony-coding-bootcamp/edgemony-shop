@@ -1,4 +1,4 @@
-.CartModal {
+.ModalCart {
   z-index: 1000;
   position: fixed;
   top: 0;
@@ -7,12 +7,12 @@
   width: 100%;
   pointer-events: none;
 }
-.CartModal.is-open {
+.ModalCart.is-open {
   opacity: 1;
   pointer-events: auto;
 }
 
-.CartModal__overlay {
+.ModalCart__overlay {
   background-color: rgba(222, 222, 222, 0.85);
   position: absolute;
   width: 100%;
@@ -21,11 +21,11 @@
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
-.CartModal.is-open .CartModal__overlay {
+.ModalCart.is-open .ModalCart__overlay {
   opacity: 1;
 }
 
-.CartModal__body {
+.ModalCart__body {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -41,38 +41,27 @@
   opacity: 0;
   transition: opacity 0.5s ease-in-out, transform 0.333s ease-out;
 }
-.CartModal.is-open .CartModal__body {
+.ModalCart.is-open .ModalCart__body {
   opacity: 1;
   transform: translateX(0);
 }
 
-.CartModal__content {
+.ModalCart__content {
   flex-grow: 1;
   overflow: auto;
 }
 
-.CartModal__content__empty {
+.ModalCart__content__empty {
   text-align: center;
   margin-top: 40px;
 }
 
-.CartModal header {
-  display: flex;
-  align-items: center;
-}
-
-.CartModal__title {
-  flex-grow: 1;
-  text-align: center;
-  margin: 10px 0;
-}
-
-.CartModal footer {
+.ModalCart footer {
   text-align: center;
 }
 
 @media (min-width: 700px) {
-  .CartModal__body {
+  .ModalCart__body {
     width: 500px;
   }
 }

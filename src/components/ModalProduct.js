@@ -1,8 +1,8 @@
 import { PropTypes } from "prop-types";
 
-import "./ProductModal.css";
+import "./ModalProduct.css";
 
-function ProductModal({
+function ModalProduct({
   content,
   closeModal,
   isOpen,
@@ -18,7 +18,7 @@ function ProductModal({
     }
   };
   return (
-    <div className={`ProductModal ${isOpen ? `isOpen` : ""}`}>
+    <div className={`ModalProduct ${isOpen ? `isOpen` : ""}`}>
       <div className="overlay" onClick={closeModal} />
       <div className="body">
         <button
@@ -49,7 +49,7 @@ function ProductModal({
   );
 }
 
-ProductModal.propTypes = {
+ModalProduct.propTypes = {
   product: PropTypes.object,
   closeModal: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
@@ -58,4 +58,4 @@ ProductModal.propTypes = {
   removeFromCart: PropTypes.func.isRequired,
 };
 
-export default ProductModal;
+export default ModalProduct;

@@ -5,9 +5,9 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Loader from "./components/Loader";
 import ProductList from "./components/ProductList";
-import ProductModal from "./components/ProductModal";
+import ProductModal from "./components/ModalProduct";
 import ErrorBanner from "./components/ErrorBanner";
-import CartModal from "./components/CartModal";
+import CartModal from "./components/ModalCart";
 import { fetchProducts, fetchCatogories } from "./services/api";
 
 const data = {
