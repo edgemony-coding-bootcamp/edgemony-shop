@@ -23,6 +23,7 @@ function App() {
   // Modal logic
   const [productInModal, setProductInModal] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isCartOpen, setCartOpen] = useState(false);
 
   function openProductModal(product) {
     console.log(product);
@@ -38,14 +39,14 @@ function App() {
   }
 
   useEffect(() => {
-    if (modalIsOpen) {
+    if (modalIsOpen || isCartOpen) {
       document.body.style.height = `100vh`;
       document.body.style.overflow = `hidden`;
     } else {
       document.body.style.height = ``;
       document.body.style.overflow = ``;
     }
-  }, [modalIsOpen]);
+  }, [modalIsOpen, isCartOpen]);
 
   // API data logic
   const [products, setProducts] = useState([]);
@@ -68,7 +69,6 @@ function App() {
 
   // Cart Logic
   const [cart, setCart] = useState([]);
-  const [isCartOpen, setCartOpen] = useState(false);
   const cartProducts = cart.map((cartItem) => {
     const { price, image, title, id } = products.find(
       (p) => p.id === cartItem.id
