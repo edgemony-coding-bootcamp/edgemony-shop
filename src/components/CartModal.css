@@ -1,59 +1,85 @@
 .CartModal {
+  z-index: 1000;
   position: fixed;
   top: 0;
+  bottom: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index:3;
+  width: 100%;
+  pointer-events: none;
 }
 
 .CartModal .overlay {
+  background-color: rgba(222, 222, 222, 0.85);
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(222, 222, 222, 0.85);
-  cursor: pointer;
-  transition: opacity 0.5s ease-in-out;
   opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
 
-.isOpen{
+.CartModal.is-open .CartModal__overlay {
+  opacity: 1;
+}
+
+.CartModal.isOpen{
   opacity: 1;
   pointer-events: auto;
 }
 
-.CartModal.isOpen .overlay {
-    opacity: 1;
-  }
 
-.CartModal .body {
-  max-width: 520px;
-  width: calc(100% - 20px - 20px);
-  border-radius: 5px;
+.CartModal__body {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
   background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-sizing: border-box;
   box-shadow: 0 2px 36px rgba(0, 0, 0, 0.25);
-  position: relative;
-  margin-left: 20px;
-  margin-right: 20px;
-  padding: 30px;
-  transform: translateY(20px);
+  transform: translateX(100%);
+  opacity: 0;
   transition: opacity 0.5s ease-in-out, transform 0.333s ease-out;
 }
+.CartModal.isOpen .CartModal__body {
+  opacity: 1;
+  transform: translateX(0);
+}
+.CartModal__content {
+  flex-grow: 1;
+  overflow: auto;
+}
 
-.body img{
+.CartModal__content__empty {
+  text-align: center;
+  margin-top: 40px;
+}
+
+
+.CartModal__content img{
     width: 100%;
-    height: 300px;
+    height: 100px;
     object-fit: contain;
     object-position: center;
 }
-
-.body .price {
+.CartModal__content .price {
     font-size: 24px;
     text-align: right;
     font-weight: bold;
 }
+
+.CartModal__content span{
+  display: block;
+  color:black;
+  font-size:30px;
+  font-weight:bolder;
+  text-align: right;
+}
+  
+  @media (min-width: 700px) {
+    .CartModal__body {
+      width: 500px;
+    }
+  }

@@ -1,0 +1,17 @@
+.wrapQuantity{
+    display: flex;
+}
+
+.wrapQuantity button{
+    margin:0 15px;
+    padding:0 13px;
+    cursor:pointer;
+    border-radius: 5px;
+    border:none;
+    background-color: transparent;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.157);
+    height:30px;
+}
+.wrapQuantity button:focus{
+    outline: none;
+}

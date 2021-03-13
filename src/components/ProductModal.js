@@ -13,7 +13,8 @@ export default function ProductModal({
     if (inCart) {
       removeFromCart(content.id);
     } else {
-      addToCart(content.id);
+      addToCart(content.id)
+      ;
     }
   };
   return (
@@ -40,7 +41,7 @@ export default function ProductModal({
             <br />
             <hr />
             <div className="price">
-              <small>Price:</small> {content.price}€
+              <small>Price:</small> {(content.price).toFixed(2)}€
             </div>
           </div>
         ) : null}

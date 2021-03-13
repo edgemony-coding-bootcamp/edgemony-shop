@@ -1,43 +1,47 @@
 import React from "react";
 import "./CartModal.css";
-import calcTotalPrice from "../services/utility";
 
-function CartModal({ closeModal, cart, isOpen }) {
- 
-  console.log("carello", cart);
+import CartProduct from "./CartProduct";
+import { formatPrice } from "../services/utility";
 
+function CartModal({
+  products,
+  isOpen,
+  close,
+  totalPrice,
+  removeFromCart,
+  setProductQuantity,
+}) {
   return (
     <>
       {isOpen ? (
-        <div className={`CartModal ${ isOpen ? `isOpen` : '' }`}>
-          <div
-            className="overlay"
-            onClick={() => closeModal()}
-          ></div>
-          <div className="Cart">
+        <div className={`CartModal ${isOpen ? `isOpen` : ""}`} onClick={() => close()}>
+          <div className="CartModal__overlay" onClick={() => close()}></div>
+          <div className="CartModal__body">
             <header className={"Cart" + "-header"}>
               <h3>Cart</h3>
             </header>
-            {cart.length > 0 && (
-              <>
-                <main className="body">
-                  {cart.map((product) => {
-                    console.log("produ", product);
-                    return (
-                      <>
-                        <img src={product.image} alt={product.image} />
-                        <h3>{product.title}</h3>
-                        <h4>Quantity: 1</h4>
-                        <h4 className="price"> {product.price}</h4>
-                      </>
-                    );
-                  })}
-                </main>
-                <footer className="CartModal__footer">
-                  <span>{calcTotalPrice(cart).toFixed(2)}</span>
-                </footer>
-              </>
-            )}
+            <>
+              <main className="CartModal__content">
+                {products.map((product) => {
+                  console.log("product", product);
+                  return (
+                    <>
+                      <CartProduct
+                        product={product}
+                        key={product.id}
+                        removeFromCart={removeFromCart}
+                        setProductQuantity={setProductQuantity}
+                      />
+                      <hr></hr>
+                    </>
+                  );
+                })}
+                <span>Total: {formatPrice(totalPrice.toFixed(2))}</span>
+              </main>
+              <footer className="CartModal__footer">
+              </footer>
+            </>
           </div>
         </div>
       ) : (

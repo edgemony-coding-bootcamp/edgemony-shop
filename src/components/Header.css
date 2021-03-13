@@ -27,7 +27,9 @@
   padding-right: 50px;
   font-size: 30px;
 }
-
+.Header button:focus{
+  outline:none;
+}
 .Header button:hover {
   color: rgb(255, 157, 0);
   transition: color 0.3s;

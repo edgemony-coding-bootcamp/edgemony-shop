@@ -11,6 +11,7 @@ import WrapProducts from "./components/WrapProducts";
 import { fetchProducts, fetchCatogories } from "./services/api";
 import CartModal from "./components/CartModal";
 import ProductModal from "./components/ProductModal";
+import calcTotalPrice from "./services/utility"
 
 const fakeProducts = require("./mocks/data/products.json");
 const currentYear = new Date().getFullYear();
@@ -88,6 +89,16 @@ function App() {
     setRetry(!retry);
   }
 
+  /***** cart logic *****/
+  const cartProducts = cart.map((cartItem) => {
+    const { price, image, title, id } = dataAPI.find(
+      (p) => p.id === cartItem.id
+    );
+    return { price, image, title, id, quantity: cartItem.quantity };
+  });
+
+  const cartTotal =calcTotalPrice(cartProducts); //function imported 
+
   function openModalCart() {
     setOpenModalCart(true);
   }
@@ -95,33 +106,57 @@ function App() {
   function closeModalCart() {
     setOpenModalCart(false);
   }
+  function isInCart(product) {
+    return product != null && cart.find((p) => p.id === product.id) != null;
+  }
+  function addToCart(productId) {
+    setCart([...cart, { id: productId, quantity: 1 }]);
+  }
+  function removeFromCart(productId) {
+    setCart(cart.filter((product) => product.id !== productId));
+  }
+  function setProductQuantity(productId, quantity) {
+    setCart(
+      cart.map((product) =>
+        product.id === productId ? { ...product, quantity } : product
+      )
+    );
+  }
 
+  
+  /*********end cart logic *******/
   return (
     <div className="App">
-      <Header logo={data.logo} cart={cart} openModal={openModalCart} />
+      <Header logo={data.logo} cart={cart} totalCart={cartTotal} openModal={openModalCart} />
       {!isLoading ? (
         <>
           {!isErrorAPI && (
             <>
               <CartModal
+                products={cartProducts}
                 isOpen={isOpenModalCart}
-                closeModal={closeModalCart}
-                cart={cart}
+                close={() => setOpenModalCart(false)}
+                totalPrice={cartTotal}
+                removeFromCart={removeFromCart}
+                setProductQuantity={setProductQuantity}
               />
               <ProductModal
                 isOpen={modalIsOpen}
                 content={productInModal}
                 closeModal={closeModal}
-                //inCart={isInCart(productInModal)}
-                //addToCart={addToCart}
-                //removeFromCart={removeFromCart}
+                inCart={isInCart(productInModal)}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
               />
               <Hero
                 title={data.title}
                 image={data.cover}
                 description={data.description}
               />
-              <WrapProducts products={dataAPI} openProductModal={openProductModal} />
+              <WrapProducts
+                products={dataAPI}
+                openProductModal={openProductModal}
+              />
               <Footer
                 logo={data.logo}
                 company={data.company}
