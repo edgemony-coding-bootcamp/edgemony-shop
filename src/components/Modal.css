@@ -11,7 +11,7 @@
   z-index: 1000;
 }
 
-.Modal.isOpen {
+.Modal.is-open {
   opacity: 1;
   pointer-events: auto;
 }
@@ -28,37 +28,6 @@
   opacity: 0;
 }
 
-.Modal.isOpen .overlay {
+.Modal.is-open .overlay {
   opacity: 1;
-}
-
-.Modal .body {
-  max-width: 520px;
-  max-height: 90vh;
-  box-sizing: border-box;
-  overflow: auto;
-  width: calc(100% - 20px - 20px);
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 2px 36px rgba(0, 0, 0, 0.25);
-  position: relative;
-  margin-left: 20px;
-  margin-right: 20px;
-  padding: 30px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease-in-out, transform 0.333s ease-out;
-}
-
-.Modal.isOpen .body {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.Modal .close {
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  cursor: pointer;
-  font-size: 24px;
 }

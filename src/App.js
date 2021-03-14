@@ -9,8 +9,9 @@ import Modal from "./components/Modal";
 import ErrorBanner from "./components/ErrorBanner";
 import Cart from "./components/Cart";
 import { fetchProducts, fetchCatogories } from "./services/api";
-import ModalSidebar from "./components/ModalSidebar";
 import ProductDetail from "./components/ProductDetail";
+import ModalBodyCenter from "./components/ModalBodyCenter";
+import ModalBodySidebar from "./components/ModalBodySidebar";
 
 const data = {
   title: "Edgemony Shop",
@@ -24,31 +25,35 @@ const data = {
 function App() {
   // Modal logic
   const [productInModal, setProductInModal] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isProductDetailOpen, setProductDetailOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
 
-  function openModalProduct(product) {
-    console.log(product);
+  function openProductDetail(product) {
     setProductInModal(product);
-    setModalIsOpen(true);
+    setProductDetailOpen(true);
   }
-
-  function closeModal() {
-    setModalIsOpen(false);
+  function closeProductDetail() {
+    setProductDetailOpen(false);
     setTimeout(() => {
       setProductInModal(null);
     }, 500);
   }
+  function openCart() {
+    setCartOpen(true);
+  }
+  function closeCart() {
+    setCartOpen(false);
+  }
 
   useEffect(() => {
-    if (modalIsOpen || isCartOpen) {
+    if (isProductDetailOpen || isCartOpen) {
       document.body.style.height = `100vh`;
       document.body.style.overflow = `hidden`;
     } else {
       document.body.style.height = ``;
       document.body.style.overflow = ``;
     }
-  }, [modalIsOpen, isCartOpen]);
+  }, [isProductDetailOpen, isCartOpen]);
 
   // API data logic
   const [products, setProducts] = useState([]);
@@ -106,7 +111,7 @@ function App() {
         cartTotal={cartTotal}
         cartSize={cart.length}
         products={products}
-        onCartClick={() => setCartOpen(true)}
+        onCartClick={openCart}
       />
       <Hero
         title={data.title}
@@ -126,31 +131,35 @@ function App() {
           <ProductList
             products={products}
             categories={categories}
-            openModalProduct={openModalProduct}
+            openProductDetail={openProductDetail}
           />
         )}
       </main>
-      <ModalSidebar
-        title="Cart"
-        isOpen={isCartOpen}
-        close={() => setCartOpen(false)}
-      >
-        <Cart
-          products={cartProducts}
-          totalPrice={cartTotal}
-          removeFromCart={removeFromCart}
-          setProductQuantity={setProductQuantity}
-        />
-      </ModalSidebar>
-      <Modal isOpen={modalIsOpen} close={closeModal}>
-        {productInModal && (
-          <ProductDetail
-            product={productInModal}
-            inCart={isInCart(productInModal)}
-            addToCart={addToCart}
+      <Modal isOpen={isCartOpen} close={closeCart}>
+        <ModalBodySidebar title="Cart" isOpen={isCartOpen} close={closeCart}>
+          <Cart
+            products={cartProducts}
+            totalPrice={cartTotal}
             removeFromCart={removeFromCart}
+            setProductQuantity={setProductQuantity}
           />
-        )}
+        </ModalBodySidebar>
+      </Modal>
+
+      <Modal isOpen={isProductDetailOpen} close={closeProductDetail}>
+        <ModalBodyCenter
+          isOpen={isProductDetailOpen}
+          close={closeProductDetail}
+        >
+          {productInModal && (
+            <ProductDetail
+              product={productInModal}
+              inCart={isInCart(productInModal)}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+            />
+          )}
+        </ModalBodyCenter>
       </Modal>
     </div>
   );

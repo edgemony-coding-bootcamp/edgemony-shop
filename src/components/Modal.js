@@ -4,18 +4,9 @@ import "./Modal.css";
 
 function Modal({ close, isOpen, children }) {
   return (
-    <div className={`Modal ${isOpen ? `isOpen` : ""}`}>
+    <div className={`Modal ${isOpen ? `is-open` : ""}`}>
       <div className="overlay" onClick={close} />
-      <div className="body">
-        <button
-          onClick={close}
-          title="close product modal"
-          className="close"
-        >
-          ×
-        </button>
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
