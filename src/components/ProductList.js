@@ -21,7 +21,7 @@ function ProductList({ products, categories, openProductModal }) {
   return (
     <div className="ProductList">
       <div className="ProductList__filters">
-        <Search onSearch={setSearchTerm} />
+        <Search term={searchTerm} onSearch={setSearchTerm} />
         <CategoriesFilter
           categories={categories}
           selectedCategories={selectedCategories}
