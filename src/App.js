@@ -22,38 +22,44 @@ const data = {
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
 };
 
-function App() {
-  // Modal logic
-  const [productInModal, setProductInModal] = useState(null);
-  const [isProductDetailOpen, setProductDetailOpen] = useState(false);
-  const [isCartOpen, setCartOpen] = useState(false);
-
-  function openProductDetail(product) {
-    setProductInModal(product);
-    setProductDetailOpen(true);
+function useModal() {
+  const [isModalOpen, setModalOpen] = useState(false);
+  function openModal() {
+    setModalOpen(true);
   }
-  function closeProductDetail() {
-    setProductDetailOpen(false);
-    setTimeout(() => {
-      setProductInModal(null);
-    }, 500);
-  }
-  function openCart() {
-    setCartOpen(true);
-  }
-  function closeCart() {
-    setCartOpen(false);
+  function closeModal() {
+    setModalOpen(false);
   }
 
   useEffect(() => {
-    if (isProductDetailOpen || isCartOpen) {
+    if (isModalOpen) {
       document.body.style.height = `100vh`;
       document.body.style.overflow = `hidden`;
     } else {
       document.body.style.height = ``;
       document.body.style.overflow = ``;
     }
-  }, [isProductDetailOpen, isCartOpen]);
+  }, [isModalOpen]);
+
+  return [isModalOpen, openModal, closeModal];
+}
+
+function App() {
+  // Modal logic
+  const [productInModal, setProductInModal] = useState(null);
+  const [isCartModalOpen, openCartModal, closeCartModal] = useModal();
+  const [isProductDetailOpen, openProductModal, closeProductModal] = useModal();
+
+  function openProductDetail(product) {
+    setProductInModal(product);
+    openProductModal();
+  }
+  function closeProductDetail() {
+    closeProductModal();
+    setTimeout(() => {
+      setProductInModal(null);
+    }, 500);
+  }
 
   // API data logic
   const [products, setProducts] = useState([]);
@@ -111,7 +117,7 @@ function App() {
         cartTotal={cartTotal}
         cartSize={cart.length}
         products={products}
-        onCartClick={openCart}
+        onCartClick={openCartModal}
       />
       <Hero
         title={data.title}
@@ -135,8 +141,12 @@ function App() {
           />
         )}
       </main>
-      <Modal isOpen={isCartOpen} close={closeCart}>
-        <ModalBodySidebar title="Cart" isOpen={isCartOpen} close={closeCart}>
+      <Modal isOpen={isCartModalOpen} close={closeCartModal}>
+        <ModalBodySidebar
+          title="Cart"
+          isOpen={isCartModalOpen}
+          close={closeCartModal}
+        >
           <Cart
             products={cartProducts}
             totalPrice={cartTotal}
