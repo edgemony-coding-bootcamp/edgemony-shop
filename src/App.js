@@ -5,11 +5,12 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Loader from "./components/Loader";
 import ProductList from "./components/ProductList";
-import ModalProduct from "./components/ModalProduct";
+import Modal from "./components/Modal";
 import ErrorBanner from "./components/ErrorBanner";
 import Cart from "./components/Cart";
 import { fetchProducts, fetchCatogories } from "./services/api";
 import ModalSidebar from "./components/ModalSidebar";
+import ProductDetail from "./components/ProductDetail";
 
 const data = {
   title: "Edgemony Shop",
@@ -141,14 +142,16 @@ function App() {
           setProductQuantity={setProductQuantity}
         />
       </ModalSidebar>
-      <ModalProduct
-        isOpen={modalIsOpen}
-        content={productInModal}
-        closeModal={closeModal}
-        inCart={isInCart(productInModal)}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-      />
+      <Modal isOpen={modalIsOpen} close={closeModal}>
+        {productInModal && (
+          <ProductDetail
+            product={productInModal}
+            inCart={isInCart(productInModal)}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+          />
+        )}
+      </Modal>
     </div>
   );
 }
