@@ -24,6 +24,7 @@ ModalSidebar.propTypes = {
   title: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default ModalSidebar;
