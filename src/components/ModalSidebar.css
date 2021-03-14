@@ -1,4 +1,4 @@
-.ModalCart {
+.ModalSidebar {
   z-index: 1000;
   position: fixed;
   top: 0;
@@ -7,12 +7,12 @@
   width: 100%;
   pointer-events: none;
 }
-.ModalCart.is-open {
+.ModalSidebar.is-open {
   opacity: 1;
   pointer-events: auto;
 }
 
-.ModalCart__overlay {
+.ModalSidebar__overlay {
   background-color: rgba(222, 222, 222, 0.85);
   position: absolute;
   width: 100%;
@@ -21,19 +21,30 @@
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
-.ModalCart.is-open .ModalCart__overlay {
+.ModalSidebar.is-open .ModalSidebar__overlay {
   opacity: 1;
 }
 
-.ModalCart__body {
+.ModalSidebar header {
+  display: flex;
+  align-items: center;
+}
+
+.ModalSidebar__title {
+  flex-grow: 1;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.ModalSidebar__body {
   position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
   width: 100%;
-  background-color: white;
   display: flex;
   flex-direction: column;
+  background-color: white;
   padding: 10px;
   box-sizing: border-box;
   box-shadow: 0 2px 36px rgba(0, 0, 0, 0.25);
@@ -41,27 +52,17 @@
   opacity: 0;
   transition: opacity 0.5s ease-in-out, transform 0.333s ease-out;
 }
-.ModalCart.is-open .ModalCart__body {
+.ModalSidebar.is-open .ModalSidebar__body {
   opacity: 1;
   transform: translateX(0);
 }
 
-.ModalCart__content {
+.ModalSidebar__content {
   flex-grow: 1;
-  overflow: auto;
-}
-
-.ModalCart__content__empty {
-  text-align: center;
-  margin-top: 40px;
-}
-
-.ModalCart footer {
-  text-align: center;
 }
 
 @media (min-width: 700px) {
-  .ModalCart__body {
+  .ModalSidebar__body {
     width: 500px;
   }
 }

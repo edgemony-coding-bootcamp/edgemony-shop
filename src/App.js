@@ -5,10 +5,11 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Loader from "./components/Loader";
 import ProductList from "./components/ProductList";
-import ProductModal from "./components/ModalProduct";
+import ModalProduct from "./components/ModalProduct";
 import ErrorBanner from "./components/ErrorBanner";
-import CartModal from "./components/ModalCart";
+import Cart from "./components/Cart";
 import { fetchProducts, fetchCatogories } from "./services/api";
+import ModalSidebar from "./components/ModalSidebar";
 
 const data = {
   title: "Edgemony Shop",
@@ -25,7 +26,7 @@ function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
 
-  function openProductModal(product) {
+  function openModalProduct(product) {
     console.log(product);
     setProductInModal(product);
     setModalIsOpen(true);
@@ -124,19 +125,23 @@ function App() {
           <ProductList
             products={products}
             categories={categories}
-            openProductModal={openProductModal}
+            openModalProduct={openModalProduct}
           />
         )}
       </main>
-      <CartModal
-        products={cartProducts}
+      <ModalSidebar
+        title="Cart"
         isOpen={isCartOpen}
         close={() => setCartOpen(false)}
-        totalPrice={cartTotal}
-        removeFromCart={removeFromCart}
-        setProductQuantity={setProductQuantity}
-      />
-      <ProductModal
+      >
+        <Cart
+          products={cartProducts}
+          totalPrice={cartTotal}
+          removeFromCart={removeFromCart}
+          setProductQuantity={setProductQuantity}
+        />
+      </ModalSidebar>
+      <ModalProduct
         isOpen={modalIsOpen}
         content={productInModal}
         closeModal={closeModal}
