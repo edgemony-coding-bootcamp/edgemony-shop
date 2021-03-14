@@ -131,7 +131,7 @@ function App() {
           <ProductList
             products={products}
             categories={categories}
-            openProductDetail={openProductDetail}
+            onViewDetails={openProductDetail}
           />
         )}
       </main>
