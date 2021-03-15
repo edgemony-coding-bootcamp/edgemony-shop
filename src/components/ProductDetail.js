@@ -1,35 +1,16 @@
-import "./ProductModal.css";
+import React from "react";
 
-export default function ProductModal({
-  content,
-  closeModal,
-  isOpen,
-  inCart,
-  addToCart,
-  removeFromCart,})
-
- {
-  const toggleCart = () => {
+function ProductDetail({ content, inCart, addToCart, removeFromCart }) {
+  
+    const toggleCart = () => {
     if (inCart) {
       removeFromCart(content.id);
     } else {
-      addToCart(content.id)
-      ;
+      addToCart(content.id);
     }
   };
-  return (
-    <div className={`ModalProduct ${isOpen ? `isOpen` : ""}`}>
-      {console.log(isOpen)}
-    <div className="overlay" onClick={closeModal} />
-    <div className="body">
-        <button
-          onClick={closeModal}
-          title="close product modal"
-          className="close"
-        >
-          ×
-        </button>
-        {!!content ? (
+  return <div>
+      {!!content ? (
           <div className="content">
             <img src={content.image} alt={content.title} />
             <h2>{content.title}</h2>
@@ -45,7 +26,7 @@ export default function ProductModal({
             </div>
           </div>
         ) : null}
-      </div>
-    </div>
-  )
+  </div>;
 }
+
+export default ProductDetail;

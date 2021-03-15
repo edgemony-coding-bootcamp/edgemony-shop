@@ -9,10 +9,11 @@ import ErrorBanner from "./components/ErrorBanner";
 //import NavBar from "./components/NavBar";
 import WrapProducts from "./components/WrapProducts";
 import { fetchProducts, fetchCatogories } from "./services/api";
-import CartModal from "./components/CartModal";
-import ProductModal from "./components/ProductModal";
+import ModalSidebar from "./components/ModalSidebar";
+import ModalBodyCenter from "./components/ModalBodyCenter";
 import calcTotalPrice from "./services/utility";
-import Cart from "./components/Cart"
+import Cart from "./components/Cart";
+import ProductDetail from "./components/ProductDetail";
 
 const fakeProducts = require("./mocks/data/products.json");
 const currentYear = new Date().getFullYear();
@@ -137,7 +138,7 @@ function App() {
         <>
           {!isErrorAPI && (
             <>
-              <CartModal
+              <ModalSidebar
                 isOpen={isOpenModalCart}
                 close={closeModalCart}
                 title="Cart"
@@ -148,15 +149,15 @@ function App() {
                   setProductQuantity={setProductQuantity}
                   totalPrice={cartTotal}
                 />
-              </CartModal>
-              <ProductModal
-                isOpen={modalIsOpen}
-                content={productInModal}
-                closeModal={closeModal}
-                inCart={isInCart(productInModal)}
-                addToCart={addToCart}
-                removeFromCart={removeFromCart}
-              />
+              </ModalSidebar>
+              <ModalBodyCenter isOpen={modalIsOpen} closeModal={closeModal}>
+                <ProductDetail
+                  content={productInModal}
+                  inCart={isInCart(productInModal)}
+                  addToCart={addToCart}
+                  removeFromCart={removeFromCart}
+                />
+              </ModalBodyCenter>
               <Hero
                 title={data.title}
                 image={data.cover}
