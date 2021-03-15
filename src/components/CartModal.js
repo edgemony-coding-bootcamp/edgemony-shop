@@ -1,16 +1,11 @@
 import React from "react";
 import "./CartModal.css";
 
-import CartProduct from "./CartProduct";
-import { formatPrice } from "../services/utility";
 
 function CartModal({
-  products,
   isOpen,
   close,
-  totalPrice,
-  removeFromCart,
-  setProductQuantity,
+  children
 }) {
   return (
     <>
@@ -23,21 +18,7 @@ function CartModal({
             </header>
             <>
               <main className="CartModal__content">
-                {products.map((product) => {
-                  console.log("product", product);
-                  return (
-                    <>
-                      <CartProduct
-                        product={product}
-                        key={product.id}
-                        removeFromCart={removeFromCart}
-                        setProductQuantity={setProductQuantity}
-                      />
-                      <hr></hr>
-                    </>
-                  );
-                })}
-                <span>Total: {formatPrice(totalPrice.toFixed(2))}</span>
+               {children}
               </main>
               <footer className="CartModal__footer">
               </footer>

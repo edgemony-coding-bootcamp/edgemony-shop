@@ -11,7 +11,8 @@ import WrapProducts from "./components/WrapProducts";
 import { fetchProducts, fetchCatogories } from "./services/api";
 import CartModal from "./components/CartModal";
 import ProductModal from "./components/ProductModal";
-import calcTotalPrice from "./services/utility"
+import calcTotalPrice from "./services/utility";
+import Cart from "./components/Cart"
 
 const fakeProducts = require("./mocks/data/products.json");
 const currentYear = new Date().getFullYear();
@@ -97,7 +98,7 @@ function App() {
     return { price, image, title, id, quantity: cartItem.quantity };
   });
 
-  const cartTotal =calcTotalPrice(cartProducts); //function imported 
+  const cartTotal = calcTotalPrice(cartProducts); //function imported
 
   function openModalCart() {
     setOpenModalCart(true);
@@ -123,23 +124,31 @@ function App() {
     );
   }
 
-  
   /*********end cart logic *******/
   return (
     <div className="App">
-      <Header logo={data.logo} cart={cart} totalCart={cartTotal} openModal={openModalCart} />
+      <Header
+        logo={data.logo}
+        cart={cart}
+        totalCart={cartTotal}
+        openModal={openModalCart}
+      />
       {!isLoading ? (
         <>
           {!isErrorAPI && (
             <>
               <CartModal
-                products={cartProducts}
                 isOpen={isOpenModalCart}
-                close={() => setOpenModalCart(false)}
-                totalPrice={cartTotal}
-                removeFromCart={removeFromCart}
-                setProductQuantity={setProductQuantity}
-              />
+                close={closeModalCart}
+                title="Cart"
+              >
+                <Cart
+                  products={cartProducts}
+                  removeFromCart={removeFromCart}
+                  setProductQuantity={setProductQuantity}
+                  totalPrice={cartTotal}
+                />
+              </CartModal>
               <ProductModal
                 isOpen={modalIsOpen}
                 content={productInModal}

@@ -8,7 +8,7 @@ function CartProduct({ product, removeFromCart, setProductQuantity }) {
   const remove = () => removeFromCart(id);
   return (
     <div>
-      <img src={product.image} alt={image} />
+      <img src={image} alt={image} />
       <h3>{title}</h3>
       <div className="wrapQuantity">
         <button onClick={decrement} disabled={quantity === 1}>
