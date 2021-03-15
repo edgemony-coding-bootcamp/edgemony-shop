@@ -2,17 +2,17 @@ import PropTypes from "prop-types";
 import CardProduct from "./CardProduct";
 import "./Products.css";
 
-function Products(props) {
+function Products({ products, openProductModal}) {
   return (
     <main className="Products">
       <div className="wrapProducts">
-        {props.products.map((item) => {
+        {products.map((item) => {
           return (
             <>
               <CardProduct
                 key={item.id}
                 product={item} 
-                setCart={props.setCart}   
+                openProductModal={() => openProductModal(item)} 
               />
             </>
           );

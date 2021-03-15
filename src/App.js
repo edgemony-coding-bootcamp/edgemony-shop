@@ -9,7 +9,12 @@ import ErrorBanner from "./components/ErrorBanner";
 //import NavBar from "./components/NavBar";
 import WrapProducts from "./components/WrapProducts";
 import { fetchProducts, fetchCatogories } from "./services/api";
-import CartModal from "./components/CartModal";
+import ModalSidebar from "./components/ModalSidebar";
+import ModalBodyCenter from "./components/ModalBodyCenter";
+import Modal from "./components/Modal";
+import calcTotalPrice from "./services/utility";
+import Cart from "./components/Cart";
+import ProductDetail from "./components/ProductDetail";
 
 const fakeProducts = require("./mocks/data/products.json");
 const currentYear = new Date().getFullYear();
@@ -30,9 +35,29 @@ function App() {
   const [isLoading, setLoading] = useState(false);
   const [isErrorAPI, setErrorAPI] = useState(false);
   const [retry, setRetry] = useState(false);
-  const [cart,setCart]=useState([])
-  const [isOpenModalCart,setOpenModalCart]= useState(false);
+  const [cart, setCart] = useState([]);
+  
+  
+  
+  /***********MODAL LOGIC********* */
+  const [productInModal, setProductInModal] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isOpenModalCart, setOpenModalCart] = useState(false);
 
+  function openProductModal(product) {
+    console.log(product);
+    setProductInModal(product);
+    setModalIsOpen(true);
+  }
+
+  function closeModal() {
+    setModalIsOpen(false);
+    setTimeout(() => {
+      setProductInModal(null);
+    }, 500);
+  }
+
+  /***********END MODAL LOGIC****************** */
   useEffect(() => {
     setLoading(true);
     fetch("https://fakestoreapi.com/products")
@@ -42,7 +67,7 @@ function App() {
         if (!randomError) {
           setDataAPI(res);
           setLoading(false);
-          setErrorAPI('')
+          setErrorAPI("");
         } else {
           throw new Error("API CALL ERROR!!");
         }
@@ -65,11 +90,20 @@ function App() {
       .finally(() => setLoading(false));
   }, [retry]);
 
-
   function changeStateError() {
     setRetry(!retry);
   }
-  
+
+  /***** cart logic *****/
+  const cartProducts = cart.map((cartItem) => {
+    const { price, image, title, id } = dataAPI.find(
+      (p) => p.id === cartItem.id
+    );
+    return { price, image, title, id, quantity: cartItem.quantity };
+  });
+
+  const cartTotal = calcTotalPrice(cartProducts); //function imported
+
   function openModalCart() {
     setOpenModalCart(true);
   }
@@ -77,24 +111,72 @@ function App() {
   function closeModalCart() {
     setOpenModalCart(false);
   }
+  function isInCart(product) {
+    return product != null && cart.find((p) => p.id === product.id) != null;
+  }
+  function addToCart(productId) {
+    setCart([...cart, { id: productId, quantity: 1 }]);
+  }
+  function removeFromCart(productId) {
+    setCart(cart.filter((product) => product.id !== productId));
+  }
+  function setProductQuantity(productId, quantity) {
+    setCart(
+      cart.map((product) =>
+        product.id === productId ? { ...product, quantity } : product
+      )
+    );
+  }
+
+  /*********end cart logic *******/
 
   return (
     <div className="App">
-      {console.log("data", dataAPI)}
-      <Header logo={data.logo} cart={cart} 
-                openModal={openModalCart}/>
+      <Header
+        logo={data.logo}
+        cart={cart}
+        totalCart={cartTotal}
+        openModal={openModalCart}
+      />
       {!isLoading ? (
         <>
           {!isErrorAPI && (
             <>
-              <CartModal isOpen={isOpenModalCart} closeModal={closeModalCart} cart={cart}
-              />
+              <Modal isOpen={isOpenModalCart} close={closeModalCart}>
+                <ModalSidebar
+                  isOpen={isOpenModalCart}
+                  close={closeModalCart}
+                  title="Cart"
+                >
+                  <Cart
+                    products={cartProducts}
+                    removeFromCart={removeFromCart}
+                    setProductQuantity={setProductQuantity}
+                    totalPrice={cartTotal}
+                  />
+                </ModalSidebar>
+              </Modal>
+               <Modal isOpen={modalIsOpen} closeModal={closeModal}> 
+                <ModalBodyCenter 
+                isOpen={modalIsOpen} 
+                closeModal={closeModal}>
+                  <ProductDetail
+                    content={productInModal}
+                    inCart={isInCart(productInModal)}
+                    addToCart={addToCart}
+                    removeFromCart={removeFromCart}
+                  />
+                </ModalBodyCenter>
+              </Modal> 
               <Hero
                 title={data.title}
                 image={data.cover}
                 description={data.description}
               />
-              <WrapProducts products={dataAPI} setCart={setCart}/>
+              <WrapProducts
+                products={dataAPI}
+                openProductModal={openProductModal}
+              />
               <Footer
                 logo={data.logo}
                 company={data.company}
