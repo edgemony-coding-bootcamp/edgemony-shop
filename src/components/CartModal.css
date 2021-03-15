@@ -1,32 +1,3 @@
-.CartModal {
-  z-index: 1000;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  pointer-events: none;
-}
-
-.CartModal .overlay {
-  background-color: rgba(222, 222, 222, 0.85);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.CartModal.is-open .CartModal__overlay {
-  opacity: 1;
-}
-
-.CartModal.isOpen{
-  opacity: 1;
-  pointer-events: auto;
-}
-
-
 .CartModal__body {
   position: fixed;
   top: 0;

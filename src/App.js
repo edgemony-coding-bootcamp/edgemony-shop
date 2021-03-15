@@ -11,6 +11,7 @@ import WrapProducts from "./components/WrapProducts";
 import { fetchProducts, fetchCatogories } from "./services/api";
 import ModalSidebar from "./components/ModalSidebar";
 import ModalBodyCenter from "./components/ModalBodyCenter";
+import Modal from "./components/Modal";
 import calcTotalPrice from "./services/utility";
 import Cart from "./components/Cart";
 import ProductDetail from "./components/ProductDetail";
@@ -35,11 +36,13 @@ function App() {
   const [isErrorAPI, setErrorAPI] = useState(false);
   const [retry, setRetry] = useState(false);
   const [cart, setCart] = useState([]);
-  const [isOpenModalCart, setOpenModalCart] = useState(false);
-
+  
+  
+  
   /***********MODAL LOGIC********* */
   const [productInModal, setProductInModal] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isOpenModalCart, setOpenModalCart] = useState(false);
 
   function openProductModal(product) {
     console.log(product);
@@ -126,6 +129,7 @@ function App() {
   }
 
   /*********end cart logic *******/
+
   return (
     <div className="App">
       <Header
@@ -138,26 +142,32 @@ function App() {
         <>
           {!isErrorAPI && (
             <>
-              <ModalSidebar
-                isOpen={isOpenModalCart}
-                close={closeModalCart}
-                title="Cart"
-              >
-                <Cart
-                  products={cartProducts}
-                  removeFromCart={removeFromCart}
-                  setProductQuantity={setProductQuantity}
-                  totalPrice={cartTotal}
-                />
-              </ModalSidebar>
-              <ModalBodyCenter isOpen={modalIsOpen} closeModal={closeModal}>
-                <ProductDetail
-                  content={productInModal}
-                  inCart={isInCart(productInModal)}
-                  addToCart={addToCart}
-                  removeFromCart={removeFromCart}
-                />
-              </ModalBodyCenter>
+              <Modal isOpen={isOpenModalCart} close={closeModalCart}>
+                <ModalSidebar
+                  isOpen={isOpenModalCart}
+                  close={closeModalCart}
+                  title="Cart"
+                >
+                  <Cart
+                    products={cartProducts}
+                    removeFromCart={removeFromCart}
+                    setProductQuantity={setProductQuantity}
+                    totalPrice={cartTotal}
+                  />
+                </ModalSidebar>
+              </Modal>
+               <Modal isOpen={modalIsOpen} closeModal={closeModal}> 
+                <ModalBodyCenter 
+                isOpen={modalIsOpen} 
+                closeModal={closeModal}>
+                  <ProductDetail
+                    content={productInModal}
+                    inCart={isInCart(productInModal)}
+                    addToCart={addToCart}
+                    removeFromCart={removeFromCart}
+                  />
+                </ModalBodyCenter>
+              </Modal> 
               <Hero
                 title={data.title}
                 image={data.cover}

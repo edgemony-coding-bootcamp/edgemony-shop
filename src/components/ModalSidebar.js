@@ -1,35 +1,24 @@
 import React from "react";
 import "./CartModal.css";
 
-
-function CartModal({
-  isOpen,
-  close,
-  children
-}) {
+function ModalSidebar({ isOpen, close, children }) {
+  console.log("isOpen",isOpen);
   return (
     <>
-      {isOpen ? (
-        <div className={`CartModal ${isOpen ? `isOpen` : ""}`} onClick={() => close()}>
-          <div className="CartModal__overlay" onClick={() => close()}></div>
-          <div className="CartModal__body">
-            <header className={"Cart" + "-header"}>
-              <h3>Cart</h3>
-            </header>
-            <>
-              <main className="CartModal__content">
-               {children}
-              </main>
-              <footer className="CartModal__footer">
-              </footer>
-            </>
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
+    {isOpen?
+      <div>
+        <header className={"Cart" + "-header"}>
+          <h3>Cart</h3>
+        </header>
+        <>
+          <main className="Modal__content">{children}</main>
+          <footer className="Modal__footer"></footer>
+        </>
+      </div>:
+      <>Ciao</>
+    }
     </>
   );
 }
 
-export default CartModal;
+export default ModalSidebar;

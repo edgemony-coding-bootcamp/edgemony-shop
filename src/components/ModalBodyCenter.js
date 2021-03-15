@@ -1,6 +1,6 @@
 import "./ProductModal.css";
 
-export default function ProductModal({
+export default function ModalBodyCenter({
   closeModal,
   isOpen,
   children})
@@ -8,10 +8,10 @@ export default function ProductModal({
  {
   
   return (
-    <div className={`ModalProduct ${isOpen ? `isOpen` : ""}`}>
-      {console.log(isOpen)}
-    <div className="overlay" onClick={closeModal} />
-    <div className="body">
+    <>
+    {console.log("dentro")}
+    {isOpen &&
+    <div className="Modal__body">
         <button
           onClick={closeModal}
           title="close product modal"
@@ -21,6 +21,7 @@ export default function ProductModal({
         </button>
         {children}
       </div>
-    </div>
+    }
+    </>
   )
 }

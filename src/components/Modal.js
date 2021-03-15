@@ -1,22 +1,15 @@
-import React from 'react'
-import "./CartModal.css";
+import React from "react";
+import "./Modal.css";
 function Modal(isOpen, close, children) {
-    
-        return (
-          <>
-            {isOpen ? (
-              <div
-                className={`CartModal ${isOpen ? `isOpen` : ""}`}
-                onClick={() => close}
-              >
-                <div className="CartModal__overlay" onClick={() => close}></div>
-                {children}
-              </div>
-            ) : (
-              <></>
-            )}
-          </>
-        );
-      }
+  console.log("isOpen", isOpen);
+  return (
+    <>
+      <div className={`Modal ${isOpen ? `isOpen` : ""}`} onClick={close}>
+        <div className="Modal__overlay" onClick={close}></div>
+        <div className="Modal__body">{console.log("ciao")}{children}</div>
+      </div>
+    </>
+  );
+}
 
-export default Modal
+export default Modal;
