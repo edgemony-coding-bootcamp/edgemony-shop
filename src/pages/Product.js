@@ -2,7 +2,7 @@ import React,{useState,useEffect}from "react";
 import { fetchProduct } from "./../services/api";
 import {useParams} from "react-router-dom";
 
-function Product() {
+function Product({addToCart,removeFromCart,inCart}) {
   let { productId } = useParams();
   const [product, setProduct] = useState(null);
 
@@ -12,6 +12,14 @@ function Product() {
     });
   }, [productId]);
 
+  const toggleCart = () => {
+    if (inCart(product)) {
+      removeFromCart(product.id);
+    } else {
+      addToCart(product);
+    }
+  };
+
   return (
     <div>
       {product ? (
@@ -19,9 +27,9 @@ function Product() {
           <img src={product.image} alt={product.title} />
           <h2>{product.title}</h2>
           <p>{product.description}</p>
-          {/* <button type="button" className="addToCart" onClick={toggleCart}>
-            {inCart ? "Remove to Cart -" : "Add to Cart +"}
-          </button> */}
+          <button type="button" className="addToCart" onClick={toggleCart}>
+            {inCart(product) ? "Remove to Cart -" : "Add to Cart +"}
+          </button>
           <br />
           <br />
           <hr />
