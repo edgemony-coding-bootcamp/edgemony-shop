@@ -1,9 +1,5 @@
-import { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { useState } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./App.css";
 
@@ -12,8 +8,6 @@ import Product from "./pages/Product";
 import Page404 from "./pages/Page404";
 import Cart from "./pages/Cart";
 import Header from "./components/Header";
-import Modal from "./components/Modal";
-import ModalBodySidebar from "./components/ModalBodySidebar";
 
 const data = {
   title: "Edgemony Shop",
@@ -63,7 +57,11 @@ function App() {
             <Home />
           </Route>
           <Route path="/product/:productId">
-            <Product addToCart={addToCart} removeFromCart={removeFromCart} isInCart={isInCart}  />
+            <Product
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+              isInCart={isInCart}
+            />
           </Route>
           <Route path="/cart">
             <Cart
