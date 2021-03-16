@@ -3,11 +3,14 @@
   flex-direction: column;
   box-sizing: border-box;
   height: 100%;
+  min-height: calc(100vh - 78px);
 }
 
 .Cart__content {
   flex-grow: 1;
   overflow: auto;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .Cart__content__empty {
@@ -17,4 +20,6 @@
 
 .Cart footer {
   text-align: center;
+  background-color: rgb(225, 225, 225);
+  padding: 10px 25px;
 }
