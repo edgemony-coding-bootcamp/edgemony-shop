@@ -1,0 +1,33 @@
+.Modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.Modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.Modal .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(222, 222, 222, 0.85);
+  cursor: pointer;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+}
+
+.Modal.is-open .overlay {
+  opacity: 1;
+}

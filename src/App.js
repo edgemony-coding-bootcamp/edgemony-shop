@@ -5,11 +5,13 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Loader from "./components/Loader";
 import ProductList from "./components/ProductList";
-import ModalProduct from "./components/ModalProduct";
+import Modal from "./components/Modal";
 import ErrorBanner from "./components/ErrorBanner";
 import Cart from "./components/Cart";
 import { fetchProducts, fetchCatogories } from "./services/api";
-import ModalSidebar from "./components/ModalSidebar";
+import ProductDetail from "./components/ProductDetail";
+import ModalBodyCenter from "./components/ModalBodyCenter";
+import ModalBodySidebar from "./components/ModalBodySidebar";
 
 const data = {
   title: "Edgemony Shop",
@@ -20,34 +22,44 @@ const data = {
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
 };
 
-function App() {
-  // Modal logic
-  const [productInModal, setProductInModal] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [isCartOpen, setCartOpen] = useState(false);
-
-  function openModalProduct(product) {
-    console.log(product);
-    setProductInModal(product);
-    setModalIsOpen(true);
+function useModal() {
+  const [isModalOpen, setModalOpen] = useState(false);
+  function openModal() {
+    setModalOpen(true);
   }
-
   function closeModal() {
-    setModalIsOpen(false);
-    setTimeout(() => {
-      setProductInModal(null);
-    }, 500);
+    setModalOpen(false);
   }
 
   useEffect(() => {
-    if (modalIsOpen || isCartOpen) {
+    if (isModalOpen) {
       document.body.style.height = `100vh`;
       document.body.style.overflow = `hidden`;
     } else {
       document.body.style.height = ``;
       document.body.style.overflow = ``;
     }
-  }, [modalIsOpen, isCartOpen]);
+  }, [isModalOpen]);
+
+  return [isModalOpen, openModal, closeModal];
+}
+
+function App() {
+  // Modal logic
+  const [productInModal, setProductInModal] = useState(null);
+  const [isCartModalOpen, openCartModal, closeCartModal] = useModal();
+  const [isProductDetailOpen, openProductModal, closeProductModal] = useModal();
+
+  function openProductDetail(product) {
+    setProductInModal(product);
+    openProductModal();
+  }
+  function closeProductDetail() {
+    closeProductModal();
+    setTimeout(() => {
+      setProductInModal(null);
+    }, 500);
+  }
 
   // API data logic
   const [products, setProducts] = useState([]);
@@ -105,7 +117,7 @@ function App() {
         cartTotal={cartTotal}
         cartSize={cart.length}
         products={products}
-        onCartClick={() => setCartOpen(true)}
+        onCartClick={openCartModal}
       />
       <Hero
         title={data.title}
@@ -125,30 +137,40 @@ function App() {
           <ProductList
             products={products}
             categories={categories}
-            openModalProduct={openModalProduct}
+            onViewDetails={openProductDetail}
           />
         )}
       </main>
-      <ModalSidebar
-        title="Cart"
-        isOpen={isCartOpen}
-        close={() => setCartOpen(false)}
-      >
-        <Cart
-          products={cartProducts}
-          totalPrice={cartTotal}
-          removeFromCart={removeFromCart}
-          setProductQuantity={setProductQuantity}
-        />
-      </ModalSidebar>
-      <ModalProduct
-        isOpen={modalIsOpen}
-        content={productInModal}
-        closeModal={closeModal}
-        inCart={isInCart(productInModal)}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-      />
+      <Modal isOpen={isCartModalOpen} close={closeCartModal}>
+        <ModalBodySidebar
+          title="Cart"
+          isOpen={isCartModalOpen}
+          close={closeCartModal}
+        >
+          <Cart
+            products={cartProducts}
+            totalPrice={cartTotal}
+            removeFromCart={removeFromCart}
+            setProductQuantity={setProductQuantity}
+          />
+        </ModalBodySidebar>
+      </Modal>
+
+      <Modal isOpen={isProductDetailOpen} close={closeProductDetail}>
+        <ModalBodyCenter
+          isOpen={isProductDetailOpen}
+          close={closeProductDetail}
+        >
+          {productInModal && (
+            <ProductDetail
+              product={productInModal}
+              inCart={isInCart(productInModal)}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+            />
+          )}
+        </ModalBodyCenter>
+      </Modal>
     </div>
   );
 }

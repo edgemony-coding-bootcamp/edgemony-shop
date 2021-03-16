@@ -6,7 +6,7 @@ import Search from "./Search";
 import "./ProductList.css";
 import CategoriesFilter from "./CategoriesFilter";
 
-function ProductList({ products, categories, openModalProduct }) {
+function ProductList({ products, categories, onViewDetails }) {
   const [searchTerm, setSearchTerm] = useState();
   const [selectedCategories, setSelectedCategories] = useState([]);
 
@@ -33,7 +33,7 @@ function ProductList({ products, categories, openModalProduct }) {
           <Product
             product={product}
             key={product.id}
-            openModalProduct={() => openModalProduct(product)}
+            onViewDetails={() => onViewDetails(product)}
           />
         ))}
       </div>
@@ -44,7 +44,7 @@ function ProductList({ products, categories, openModalProduct }) {
 ProductList.propTypes = {
   products: PropTypes.array.isRequired,
   categories: PropTypes.array.isRequired,
-  openModalProduct: PropTypes.func.isRequired,
+  onViewDetails: PropTypes.func.isRequired,
 };
 
 export default ProductList;
