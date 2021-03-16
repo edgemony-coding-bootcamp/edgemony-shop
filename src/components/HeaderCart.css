@@ -8,7 +8,7 @@
   font-size: 1.6em;
   position: relative;
   margin-left: 10px;
-  cursor: pointer;
+  color: inherit;
 }
 
 .HeaderCart .qty {

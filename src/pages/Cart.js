@@ -1,6 +1,6 @@
 import "./Cart.css";
 import { PropTypes } from "prop-types";
-import CartProduct from "./CartProduct";
+import CartProduct from "./../components/CartProduct";
 import { formatPrice } from "../services/utils";
 
 function Cart({ products, totalPrice, removeFromCart, setProductQuantity }) {

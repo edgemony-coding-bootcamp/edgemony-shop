@@ -10,10 +10,10 @@ import "./App.css";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Page404 from "./pages/Page404";
+import Cart from "./pages/Cart";
 import Header from "./components/Header";
 import Modal from "./components/Modal";
 import ModalBodySidebar from "./components/ModalBodySidebar";
-import Cart from "./components/Cart";
 
 const data = {
   title: "Edgemony Shop",
@@ -24,32 +24,7 @@ const data = {
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
 };
 
-function useModal() {
-  const [isModalOpen, setModalOpen] = useState(false);
-  function openModal() {
-    setModalOpen(true);
-  }
-  function closeModal() {
-    setModalOpen(false);
-  }
-
-  useEffect(() => {
-    if (isModalOpen) {
-      document.body.style.height = `100vh`;
-      document.body.style.overflow = `hidden`;
-    } else {
-      document.body.style.height = ``;
-      document.body.style.overflow = ``;
-    }
-  }, [isModalOpen]);
-
-  return [isModalOpen, openModal, closeModal];
-}
-
 function App() {
-  // Modal logic
-  const [isCartModalOpen, openCartModal, closeCartModal] = useModal();
-
   // Cart Logic
   const [cart, setCart] = useState([]);
   const cartTotal = cart.reduce(
@@ -81,22 +56,7 @@ function App() {
           title={data.title}
           cartTotal={cartTotal}
           cartSize={cart.length}
-          onCartClick={openCartModal}
         />
-        <Modal isOpen={isCartModalOpen} close={closeCartModal}>
-          <ModalBodySidebar
-            title="Cart"
-            isOpen={isCartModalOpen}
-            close={closeCartModal}
-          >
-            <Cart
-              products={cart}
-              totalPrice={cartTotal}
-              removeFromCart={removeFromCart}
-              setProductQuantity={setProductQuantity}
-            />
-          </ModalBodySidebar>
-        </Modal>
 
         <Switch>
           <Route exact path="/">
@@ -104,6 +64,14 @@ function App() {
           </Route>
           <Route path="/product/:productId">
             <Product addToCart={addToCart} removeFromCart={removeFromCart} isInCart={isInCart}  />
+          </Route>
+          <Route path="/cart">
+            <Cart
+              products={cart}
+              totalPrice={cartTotal}
+              removeFromCart={removeFromCart}
+              setProductQuantity={setProductQuantity}
+            />
           </Route>
           <Route path="*">
             <Page404 />

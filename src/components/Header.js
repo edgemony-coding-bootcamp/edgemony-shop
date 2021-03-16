@@ -15,7 +15,6 @@ function Header({ logo, title, cartTotal, cartSize, onCartClick }) {
       <HeaderCart
         cartTotal={cartTotal}
         cartSize={cartSize}
-        onCartClick={onCartClick}
       />
     </header>
   );
@@ -26,7 +25,6 @@ Header.propTypes = {
   title: PropTypes.string.isRequired,
   cartTotal: PropTypes.number.isRequired,
   cartSize: PropTypes.number.isRequired,
-  onCartClick: PropTypes.func.isRequired,
 };
 
 export default Header;

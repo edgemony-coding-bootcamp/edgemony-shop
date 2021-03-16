@@ -1,16 +1,19 @@
 import PropTypes from "prop-types";
+import {
+  Link
+} from "react-router-dom";
 
 import { formatPrice } from "../services/utils";
 import "./HeaderCart.css";
 
-function HeaderCart({ cartTotal, cartSize, onCartClick }) {
+function HeaderCart({ cartTotal, cartSize }) {
   return (
     <div className="HeaderCart">
       {!!cartSize && <span className="price">{formatPrice(cartTotal)}</span>}
-      <span className="icon" onClick={onCartClick}>
+      <Link to="/cart" className="icon">
         <i className="fas fa-shopping-cart"></i>
         {!!cartSize && <span className="qty">{cartSize}</span>}
-      </span>
+      </Link>
     </div>
   );
 }
@@ -18,7 +21,6 @@ function HeaderCart({ cartTotal, cartSize, onCartClick }) {
 HeaderCart.propTypes = {
   cartTotal: PropTypes.number.isRequired,
   cartSize: PropTypes.number.isRequired,
-  onCartClick: PropTypes.func.isRequired,
 };
 
 export default HeaderCart;
