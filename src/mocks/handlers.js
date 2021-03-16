@@ -38,9 +38,12 @@ export const handlers = [
       const q = req.url.searchParams.get("q");
       const limit = parseInt(req.url.searchParams.get("limit"));
       const offset = parseInt(req.url.searchParams.get("offset")) || 0;
-      let filteredProducts = products;
+      let filteredProducts = products.map((product) => {
+        delete product.description
+        return product
+      });
       if (q) {
-        filteredProducts = products.filter(
+        filteredProducts = filteredProducts.filter(
           (product) => product.title.search(new RegExp(q, "i")) !== -1
         );
       }
