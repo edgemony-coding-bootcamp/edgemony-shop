@@ -12,9 +12,9 @@
   );
   box-sizing: border-box;
 }
-
-.Header img {
+.Header__logo {
   height: 60%;
+  width:20%
 }
 
 .Header button {
