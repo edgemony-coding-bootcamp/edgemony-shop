@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { PropTypes } from "prop-types";
-import Product from "./Product";
+import ProductItem from "./ProductItem";
 import Search from "./Search";
 
 import "./ProductList.css";
 import CategoriesFilter from "./CategoriesFilter";
 
-function ProductList({ products, categories, onViewDetails }) {
+function ProductList({ products, categories }) {
   const [searchTerm, setSearchTerm] = useState();
   const [selectedCategories, setSelectedCategories] = useState([]);
 
@@ -30,10 +30,9 @@ function ProductList({ products, categories, onViewDetails }) {
       </div>
       <div className="ProductList__products">
         {filteredProducts.map((product) => (
-          <Product
+          <ProductItem
             product={product}
             key={product.id}
-            onViewDetails={() => onViewDetails(product)}
           />
         ))}
       </div>
@@ -44,7 +43,6 @@ function ProductList({ products, categories, onViewDetails }) {
 ProductList.propTypes = {
   products: PropTypes.array.isRequired,
   categories: PropTypes.array.isRequired,
-  onViewDetails: PropTypes.func.isRequired,
 };
 
 export default ProductList;

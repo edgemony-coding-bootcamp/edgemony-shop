@@ -16,7 +16,6 @@ function HeaderCart({ cartTotal, cartSize, onCartClick }) {
 }
 
 HeaderCart.propTypes = {
-  products: PropTypes.array.isRequired,
   cartTotal: PropTypes.number.isRequired,
   cartSize: PropTypes.number.isRequired,
   onCartClick: PropTypes.func.isRequired,

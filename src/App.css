@@ -1,5 +1,10 @@
 .App {
-  padding-top: 90px;
+  padding-top: 78px;
+  box-sizing: border-box;
+}
+
+.App * {
+  box-sizing: inherit;
 }
 
 .App main {

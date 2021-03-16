@@ -1,0 +1,9 @@
+.Page404 {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.Page404 h1 {
+  color: red;
+  text-align: center;
+}
