@@ -1,7 +1,6 @@
 import React,{useState,useEffect}from "react";
 import { fetchProduct } from "./../services/api";
 import {useParams} from "react-router-dom";
-
 function Product({addToCart,removeFromCart,inCart}) {
   let { productId } = useParams();
   const [product, setProduct] = useState(null);
