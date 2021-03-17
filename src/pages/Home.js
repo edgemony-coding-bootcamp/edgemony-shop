@@ -15,21 +15,27 @@ const data = {
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
 };
 
+let cache;
+
 function Home() {
   // API data logic
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState(cache?.products || []);
+  const [categories, setCategories] = useState(cache?.categories || []);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [retry, setRetry] = useState(false);
 
   useEffect(() => {
+    if (cache) {
+      return;
+    }
     setIsLoading(true);
     setApiError("");
     Promise.all([fetchProducts(), fetchCatogories()])
       .then(([products, categories]) => {
         setProducts(products);
         setCategories(categories);
+        cache = { products, categories };
       })
       .catch((err) => setApiError(err.message))
       .finally(() => setIsLoading(false));
@@ -52,10 +58,7 @@ function Home() {
             retry={() => setRetry(!retry)}
           />
         ) : (
-          <ProductList
-            products={products}
-            categories={categories}
-          />
+          <ProductList products={products} categories={categories} />
         )}
       </main>
     </div>
