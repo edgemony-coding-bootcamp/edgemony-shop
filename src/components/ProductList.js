@@ -2,13 +2,36 @@ import { useState } from "react";
 import { PropTypes } from "prop-types";
 import ProductItem from "./ProductItem";
 import Search from "./Search";
-
-import "./ProductList.css";
+import { useLocation, useHistory } from "react-router-dom";
 import CategoriesFilter from "./CategoriesFilter";
+import "./ProductList.css";
 
 function ProductList({ products, categories }) {
-  const [searchTerm, setSearchTerm] = useState();
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const history = useHistory();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+
+  const selectedCategories = query.get("categories")
+    ? query.get("categories").split(",")
+    : [];
+  function setSelectedCategories(cat) {
+    if (cat.length > 0) {
+      query.set("categories", cat.join(","));
+    } else {
+      query.delete("categories");
+    }
+    history.push({ search: "?" + query.toString() });
+  }
+
+  const searchTerm = query.get("q") || "";
+  function setSearchTerm(term) {
+    if (term) {
+      query.set("q", term);
+    } else {
+      query.delete("q");
+    }
+    history.push({ search: "?" + query.toString() });
+  }
 
   const termRegexp = new RegExp(searchTerm, "i");
   const filteredProducts = products.filter(
@@ -30,10 +53,7 @@ function ProductList({ products, categories }) {
       </div>
       <div className="ProductList__products">
         {filteredProducts.map((product) => (
-          <ProductItem
-            product={product}
-            key={product.id}
-          />
+          <ProductItem product={product} key={product.id} />
         ))}
       </div>
     </div>
