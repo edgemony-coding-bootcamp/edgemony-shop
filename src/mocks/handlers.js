@@ -1,9 +1,8 @@
-/* eslint-disable no-throw-literal */
 import { rest } from "msw";
 const products = require("./data/products.json");
 const categories = require("./data/categories.json");
 
-const localStoragePrefix = "edgemony-shop";
+const localStoragePrefix = "_edgemony-shop";
 const localStorageJSON = localStorage.getItem(localStoragePrefix);
 const savedData = localStorageJSON
   ? JSON.parse(localStorageJSON)
@@ -13,10 +12,30 @@ function save() {
   localStorage.setItem(localStoragePrefix, JSON.stringify(savedData));
 }
 
+{
+  if (!localStorage.getItem("edgemony-cart-id")) {
+    const newCart = createCart();
+    localStorage.setItem("edgemony-cart-id", newCart.id);
+  }
+  const currentCartId = JSON.parse(localStorage.getItem("edgemony-cart-id"));
+  const cart = getCart(currentCartId);
+  localStorage.setItem(
+    "edgemony-cart",
+    JSON.stringify(getCartWithProducts(cart))
+  );
+}
+
+class HttpError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.status = status;
+  }
+}
+
 function getCart(cartId) {
   const cart = savedData.carts.find((cart) => cart.id === cartId);
   if (!cart) {
-    throw { message: "Cart not found", status: 404 };
+    throw new HttpError("Cart not found", 404);
   }
   return cart;
 }
@@ -41,7 +60,7 @@ function createCart() {
 
 function addToCart(cartId, productId, quantity) {
   if (!cartId || !productId || quantity <= 0) {
-    throw { status: 400, message: "Invalid data" };
+    throw new HttpError("Invalid data", 400);
   }
   const cart = getCart(cartId);
   const { id } = getProduct(productId, 400); // check if the product exists
@@ -59,7 +78,7 @@ function removeFromCart(cartId, productId) {
   const cart = getCart(cartId);
   const index = cart.items.findIndex((product) => product.id === productId);
   if (index === -1) {
-    throw { message: "Item not found", status: 404 };
+    throw new HttpError("Item not found", 404);
   }
   cart.items.splice(index, 1);
   save();
@@ -69,7 +88,7 @@ function removeFromCart(cartId, productId) {
 function getProduct(id, status = 404) {
   const product = products.find((product) => product.id === id);
   if (!product) {
-    throw { message: "Product not found", status };
+    throw new HttpError("Product not found", status);
   }
   return product;
 }
@@ -154,7 +173,7 @@ export const handlers = [
         const cart = getCart(id);
         return res(ctx.status(200), ctx.json(getCartWithProducts(cart)));
       } catch (error) {
-        if (error.status) {
+        if (error instanceof HttpError) {
           return res(
             ctx.status(error.status),
             ctx.json({ message: error.message })
@@ -175,7 +194,7 @@ export const handlers = [
           ctx.json(addToCart(id, productId, quantity))
         );
       } catch (error) {
-        if (error.status) {
+        if (error instanceof HttpError) {
           return res(
             ctx.status(error.status),
             ctx.json({ message: error.message })
@@ -199,7 +218,7 @@ export const handlers = [
         const productId = parseInt(req.params.id);
         return res(ctx.status(200), ctx.json(removeFromCart(id, productId)));
       } catch (error) {
-        if (error.status) {
+        if (error instanceof HttpError) {
           return res(
             ctx.status(error.status),
             ctx.json({ message: error.message })
