@@ -12,8 +12,6 @@ import Cart from "./pages/Cart";
 import Header from "./components/Header";
 import ErrorBanner from "./components/ErrorBanner";
 
-let cartId;
-
 const data = {
   title: "Edgemony Shop",
   description: "A fake e-commerce with a lot of potential",
@@ -25,30 +23,39 @@ const data = {
 
 function App() {
   // Cart Logic
-  const [cart, setCart] = useState([]);
-  const cartTotal = cart.reduce(
-    (total, product) => total + product.price * product.quantity,
-    0
-  );
+  const [cart, setCart] = useState(undefined);
+  const cartTotal =
+    cart?.items.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0
+    ) || 0;
   function isInCart(product) {
-    return product != null && cart.find((p) => p.id === product.id) != null;
+    return (
+      product != null && cart?.items.find((p) => p.id === product.id) != null
+    );
   }
   async function updateCart(fn, ...apiParams) {
     try {
-      const cartObj = await fn(...apiParams);
-      setCart(cartObj.items);
+      const cart = await fn(...apiParams);
+      setCart(cart);
     } catch (error) {
       console.error(`${fn.name} API call response error! ${error.message}`);
     }
   }
   function addToCart(productId) {
-    updateCart(postItemToCart, cartId, productId, 1);
+    if (cart) {
+      updateCart(postItemToCart, cart.id, productId, 1);
+    }
   }
   function removeFromCart(productId) {
-    updateCart(deleteItemFromCart, cartId, productId);
+    if (cart) {
+      updateCart(deleteItemFromCart, cart.id, productId);
+    }
   }
   function setProductQuantity(productId, quantity) {
-    updateCart(postItemToCart, cartId, productId, quantity);
+    if (cart) {
+      updateCart(postItemToCart, cart.id, productId, quantity);
+    }
   }
 
   const [apiErrors, setApiErrors] = useState({});
@@ -81,9 +88,8 @@ function App() {
     setCartError(undefined);
     async function fetchCartInEffect() {
       try {
-        const cartObj = await fetchCart(cartIdFromLocalStorage);
-        setCart(cartObj.items);
-        cartId = cartObj.id;
+        const cart = await fetchCart(cartIdFromLocalStorage);
+        setCart(cart);
       } catch ({ message }) {
         setCartError({ message, retry: () => setRetry(!retry) });
       } finally {
@@ -100,7 +106,7 @@ function App() {
           logo={data.logo}
           title={data.title}
           cartTotal={cartTotal}
-          cartSize={cart.length}
+          cartSize={cart?.items.length || 0}
           showCart={!isLoading && !cartError}
         />
 
@@ -118,7 +124,7 @@ function App() {
           </Route>
           <Route path="/cart">
             <Cart
-              products={cart}
+              products={cart?.items || []}
               totalPrice={cartTotal}
               removeFromCart={removeFromCart}
               setProductQuantity={setProductQuantity}
