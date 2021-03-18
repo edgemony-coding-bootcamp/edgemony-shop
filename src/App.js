@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { postItemToCart, deleteItemFromCart, fetchCart } from './services/api'
+import { postItemToCart, deleteItemFromCart, fetchCart } from "./services/api";
 
 import "./App.css";
 
@@ -10,8 +10,9 @@ import Product from "./pages/Product";
 import Page404 from "./pages/Page404";
 import Cart from "./pages/Cart";
 import Header from "./components/Header";
+import ErrorBanner from "./components/ErrorBanner";
 
-let cartId
+let cartId;
 
 const data = {
   title: "Edgemony Shop",
@@ -34,39 +35,48 @@ function App() {
   }
   async function updateCart(fn, ...apiParams) {
     try {
-      const cartObj = await fn(...apiParams)
-      setCart(cartObj.items);        
+      const cartObj = await fn(...apiParams);
+      setCart(cartObj.items);
     } catch (error) {
-      console.error(`${fn.name} API call response error! ${error.message}`)
+      console.error(`${fn.name} API call response error! ${error.message}`);
     }
   }
   function addToCart(productId) {
-    updateCart(postItemToCart, cartId, productId, 1)
+    updateCart(postItemToCart, cartId, productId, 1);
   }
   function removeFromCart(productId) {
-    updateCart(deleteItemFromCart, cartId, productId)
+    updateCart(deleteItemFromCart, cartId, productId);
   }
   function setProductQuantity(productId, quantity) {
-    updateCart(postItemToCart, cartId, productId, quantity)
+    updateCart(postItemToCart, cartId, productId, quantity);
   }
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
+  const [retry, setRetry] = useState(false);
   // Initial cart fetch from API
   useEffect(() => {
-    const cartIdFromLocalStorage = localStorage.getItem('edgemony-cart-id')
+    const cartIdFromLocalStorage = localStorage.getItem("edgemony-cart-id");
     // We fetch only of we have a Cart ID available
-    if (cartIdFromLocalStorage) {
-      async function fetchCartInEffect() {
-        try {
-          const cartObj = await fetchCart(cartIdFromLocalStorage)
-          setCart(cartObj.items)
-            cartId = cartObj.id
-        } catch (error) {
-          console.error('fetchCart API call response error! ', error.message)
-        }
-      }
-      fetchCartInEffect()
+    if (!cartIdFromLocalStorage) {
+      return;
     }
-  }, [])
+
+    setIsLoading(true);
+    setApiError("");
+    async function fetchCartInEffect() {
+      try {
+        const cartObj = await fetchCart(cartIdFromLocalStorage);
+        setCart(cartObj.items);
+        cartId = cartObj.id;
+      } catch (error) {
+        setApiError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchCartInEffect();
+  }, [retry]);
 
   return (
     <Router>
@@ -76,6 +86,7 @@ function App() {
           title={data.title}
           cartTotal={cartTotal}
           cartSize={cart.length}
+          showCart={!isLoading && !apiError}
         />
 
         <Switch>
@@ -95,12 +106,21 @@ function App() {
               totalPrice={cartTotal}
               removeFromCart={removeFromCart}
               setProductQuantity={setProductQuantity}
+              isLoading={isLoading}
             />
           </Route>
           <Route path="*">
             <Page404 />
           </Route>
         </Switch>
+
+        {apiError ? (
+          <ErrorBanner
+            message={apiError}
+            close={() => setApiError("")}
+            retry={() => setRetry(!retry)}
+          />
+        ) : null}
       </div>
     </Router>
   );
