@@ -1,6 +1,3 @@
-import { Link } from "react-router-dom";
-
-
 import Hero from "./../components/Hero";
 //import Products from "./components/Products";
 import Footer from "./../components/Footer";
@@ -10,11 +7,10 @@ import ErrorBanner from "./../components/ErrorBanner";
 //import NavBar from "./components/NavBar";
 import WrapProducts from "./../components/WrapProducts";
 import { fetchProducts, fetchCategories } from "./../services/api";
-import ModalSidebar from "./../components/ModalSidebar";
-import Cart from "./../components/Cart";
 
 const fakeProducts = require("./../mocks/data/products.json");
 const currentYear = new Date().getFullYear();
+let cache;
 
 const data = {
   title: "Edgemony Shop",
@@ -27,65 +23,61 @@ const data = {
   products: fakeProducts,
 };
 
-function Home() {
-
-    /******logic fetch */
-  const [dataAPI, setDataAPI] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  const [isErrorAPI, setErrorAPI] = useState(false);
-  const [retry, setRetry] = useState(false);
-  const [categories,setCategories]=useState([])
+function Home({isLoading,setLoad,isErrorAPI,setErrorAPI,retry,setRetry}) {
+  /******logic fetch */
+  const [dataAPI, setDataAPI] = useState(cache ? cache.products : []);
+  const [categories, setCategories] = useState(cache ? cache.categories : []);
 
   useEffect(() => {
-    setLoading(true);
-    setErrorAPI("");
-    Promise.all([fetchProducts(), fetchCategories()])
-      .then(([products, categories]) => {
-        setDataAPI(products);
-        setCategories(categories)
-      })
-      .catch((err) => setErrorAPI(err.message))
-      .finally(() => setLoading(false));
+    if (cache !== undefined) {
+      return;
+    } else {
+      setLoad(!isLoading);
+      setErrorAPI("");
+      Promise.all([fetchProducts(), fetchCategories()])
+        .then(([products, categories]) => {
+          setDataAPI(products);
+          setCategories(categories);
+          cache = { products, categories };
+                })
+        .catch((err) => setErrorAPI(err.message))
+        .finally(() => setLoad(!isLoading));
+    }
   }, [retry]);
 
-  function changeStateError() {
-    setRetry(!retry);
-  }
- /********** END LOGIC FETCH********/ 
-  
+  // function changeStateError() {
+  //   setRetry=true;
+  // }
+  /********** END LOGIC FETCH********/
 
   return (
-      <div className="App">
-        {!isLoading ? (
-          <>
-            {!isErrorAPI && (
-              <>
-                <Hero
-                  title={data.title}
-                  image={data.cover}
-                  description={data.description}
-                />
-                <WrapProducts
-                  products={dataAPI}
-                />
-                <Footer
-                  logo={data.logo}
-                  company={data.company}
-                  year={currentYear}
-                />
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            <Loading />
-          </>
-        )}
-        {isErrorAPI && (
-          <ErrorBanner changeStateError={changeStateError} error={isErrorAPI} />
-        )}
-      </div>
-
+    <div className="App">
+      {!isLoading ? (
+        <>
+          {!isErrorAPI && (
+            <>
+              <Hero
+                title={data.title}
+                image={data.cover}
+                description={data.description}
+              />
+              <WrapProducts products={dataAPI} />
+              <Footer
+                logo={data.logo}
+                company={data.company}
+                year={currentYear}
+              />
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <Loading />
+        </>
+      )}
+      {isErrorAPI && (()=>setRetry(true))
+      }
+    </div>
   );
 }
 
