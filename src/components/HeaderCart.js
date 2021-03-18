@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { formatPrice } from "../services/utility";
-export default function HeaderCart({ cart, openModal, cartTotal }) {
+import "./HeaderCart.css"
+export default function HeaderCart({ cart, cartTotal }) {
   console.log("cartTotal", cartTotal);
   const nItems = cart.length;
   return (
