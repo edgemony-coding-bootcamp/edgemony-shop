@@ -1,7 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { postItemToCart, deleteItemFromCart, fetchCart } from "./services/api";
+import {
+  postItemToCart,
+  deleteItemFromCart,
+  fetchCart,
+  createOrder as createOrderApi,
+  updateCart as updateCartApi,
+  createCart,
+} from "./services/api";
 
 import "./App.css";
 
@@ -11,6 +18,7 @@ import Page404 from "./pages/Page404";
 import Cart from "./pages/Cart";
 import Header from "./components/Header";
 import ErrorBanner from "./components/ErrorBanner";
+import Checkout from "./pages/Checkout";
 
 const data = {
   title: "Edgemony Shop",
@@ -38,6 +46,7 @@ function App() {
     try {
       const cart = await fn(...apiParams);
       setCart(cart);
+      return cart;
     } catch (error) {
       console.error(`${fn.name} API call response error! ${error.message}`);
     }
@@ -55,6 +64,16 @@ function App() {
   function setProductQuantity(productId, quantity) {
     if (cart) {
       updateCart(postItemToCart, cart.id, productId, quantity);
+    }
+  }
+  async function createOrder(data) {
+    if (cart) {
+      await updateCart(async () => {
+        const cartUpdated = await updateCartApi(cart.id, { billingData: data });
+        await createOrderApi(cartUpdated.id);
+        const newCart = await createCart();
+        localStorage.setItem("edgemony-cart-id", newCart.id);
+      });
     }
   }
 
@@ -130,6 +149,9 @@ function App() {
               setProductQuantity={setProductQuantity}
               isLoading={isLoading}
             />
+          </Route>
+          <Route path="/checkout">
+            <Checkout cart={cart} onCreateOrder={createOrder} />
           </Route>
           <Route path="*">
             <Page404 />
