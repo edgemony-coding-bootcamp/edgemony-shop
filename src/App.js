@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import { postItemToCart, deleteItemFromCart, fetchCart } from './services/api'
 
 import "./App.css";
 
@@ -8,6 +10,8 @@ import Product from "./pages/Product";
 import Page404 from "./pages/Page404";
 import Cart from "./pages/Cart";
 import Header from "./components/Header";
+
+let cartId
 
 const data = {
   title: "Edgemony Shop",
@@ -28,19 +32,41 @@ function App() {
   function isInCart(product) {
     return product != null && cart.find((p) => p.id === product.id) != null;
   }
-  function addToCart(product) {
-    setCart([...cart, { ...product, quantity: 1 }]);
+  async function updateCart(fn, ...apiParams) {
+    try {
+      const cartObj = await fn(...apiParams)
+      setCart(cartObj.items);        
+    } catch (error) {
+      console.error(`${fn.name} API call response error! ${error.message}`)
+    }
+  }
+  function addToCart(productId) {
+    updateCart(postItemToCart, cartId, productId, 1)
   }
   function removeFromCart(productId) {
-    setCart(cart.filter((product) => product.id !== productId));
+    updateCart(deleteItemFromCart, cartId, productId)
   }
   function setProductQuantity(productId, quantity) {
-    setCart(
-      cart.map((product) =>
-        product.id === productId ? { ...product, quantity } : product
-      )
-    );
+    updateCart(postItemToCart, cartId, productId, quantity)
   }
+
+  // Initial cart fetch from API
+  useEffect(() => {
+    const cartIdFromLocalStorage = localStorage.getItem('edgemony-cart-id')
+    // We fetch only of we have a Cart ID available
+    if (cartIdFromLocalStorage) {
+      async function fetchCartInEffect() {
+        try {
+          const cartObj = await fetchCart(cartIdFromLocalStorage)
+          setCart(cartObj.items)
+            cartId = cartObj.id
+        } catch (error) {
+          console.error('fetchCart API call response error! ', error.message)
+        }
+      }
+      fetchCartInEffect()
+    }
+  }, [])
 
   return (
     <Router>
