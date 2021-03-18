@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { postItemToCart, deleteItemFromCart, fetchCart } from "./services/api";
@@ -51,8 +51,23 @@ function App() {
     updateCart(postItemToCart, cartId, productId, quantity);
   }
 
+  const [apiErrors, setApiErrors] = useState({});
+  const cartError = apiErrors.cart;
+  const errorKey = Object.keys(apiErrors).find((key) => apiErrors[key] != null);
+  const setProductListError = useCallback(
+    (error) => setApiErrors((errors) => ({ ...errors, productList: error })),
+    []
+  );
+  const setProductError = useCallback(
+    (error) => setApiErrors((errors) => ({ ...errors, product: error })),
+    []
+  );
+  const setCartError = useCallback(
+    (error) => setApiErrors((errors) => ({ ...errors, cart: error })),
+    []
+  );
+
   const [isLoading, setIsLoading] = useState(false);
-  const [apiError, setApiError] = useState("");
   const [retry, setRetry] = useState(false);
   // Initial cart fetch from API
   useEffect(() => {
@@ -63,20 +78,20 @@ function App() {
     }
 
     setIsLoading(true);
-    setApiError("");
+    setCartError(undefined);
     async function fetchCartInEffect() {
       try {
         const cartObj = await fetchCart(cartIdFromLocalStorage);
         setCart(cartObj.items);
         cartId = cartObj.id;
-      } catch (error) {
-        setApiError(error.message);
+      } catch ({ message }) {
+        setCartError({ message, retry: () => setRetry(!retry) });
       } finally {
         setIsLoading(false);
       }
     }
     fetchCartInEffect();
-  }, [retry]);
+  }, [retry, setCartError]);
 
   return (
     <Router>
@@ -86,18 +101,19 @@ function App() {
           title={data.title}
           cartTotal={cartTotal}
           cartSize={cart.length}
-          showCart={!isLoading && !apiError}
+          showCart={!isLoading && !cartError}
         />
 
         <Switch>
           <Route exact path="/">
-            <Home />
+            <Home onError={setProductListError} />
           </Route>
           <Route path="/product/:productId">
             <Product
               addToCart={addToCart}
               removeFromCart={removeFromCart}
               isInCart={isInCart}
+              onError={setProductError}
             />
           </Route>
           <Route path="/cart">
@@ -114,11 +130,11 @@ function App() {
           </Route>
         </Switch>
 
-        {apiError ? (
+        {errorKey ? (
           <ErrorBanner
-            message={apiError}
-            close={() => setApiError("")}
-            retry={() => setRetry(!retry)}
+            message={apiErrors[errorKey].message}
+            close={() => setApiErrors({ ...apiErrors, [errorKey]: undefined })}
+            retry={apiErrors[errorKey].retry}
           />
         ) : null}
       </div>

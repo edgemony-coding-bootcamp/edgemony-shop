@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
+import { PropTypes } from "prop-types";
 
 import Hero from "./../components/Hero";
 import Loader from "./../components/Loader";
 import ProductList from "./../components/ProductList";
-import ErrorBanner from "./../components/ErrorBanner";
 import { fetchProducts, fetchCatogories } from "./../services/api";
 
 const data = {
@@ -17,12 +17,11 @@ const data = {
 
 let cache;
 
-function Home() {
+function Home({ onError }) {
   // API data logic
   const [products, setProducts] = useState(cache?.products || []);
   const [categories, setCategories] = useState(cache?.categories || []);
   const [isLoading, setIsLoading] = useState(false);
-  const [apiError, setApiError] = useState("");
   const [retry, setRetry] = useState(false);
 
   useEffect(() => {
@@ -30,16 +29,18 @@ function Home() {
       return;
     }
     setIsLoading(true);
-    setApiError("");
+    onError(undefined);
     Promise.all([fetchProducts(), fetchCatogories()])
       .then(([products, categories]) => {
         setProducts(products);
         setCategories(categories);
         cache = { products, categories };
       })
-      .catch((err) => setApiError(err.message))
+      .catch(({ message }) =>
+        onError({ message, retry: () => setRetry(!retry) })
+      )
       .finally(() => setIsLoading(false));
-  }, [retry]);
+  }, [retry, onError]);
 
   return (
     <div>
@@ -51,12 +52,6 @@ function Home() {
       <main>
         {isLoading ? (
           <Loader />
-        ) : apiError ? (
-          <ErrorBanner
-            message={apiError}
-            close={() => setApiError("")}
-            retry={() => setRetry(!retry)}
-          />
         ) : (
           <ProductList products={products} categories={categories} />
         )}
@@ -64,5 +59,9 @@ function Home() {
     </div>
   );
 }
+
+Home.propTypes = {
+  onError: PropTypes.func.isRequired,
+};
 
 export default Home;

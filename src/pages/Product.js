@@ -1,32 +1,30 @@
 import { useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
-import {
-  useParams
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { fetchProduct } from "./../services/api";
 import Loader from "./../components/Loader";
-import ErrorBanner from "./../components/ErrorBanner";
-import './Product.css'
+import "./Product.css";
 
-function Product({ addToCart, removeFromCart, isInCart }) {
+function Product({ addToCart, removeFromCart, isInCart, onError }) {
   let { productId } = useParams();
 
-  const [product, setProduct] = useState({})
+  const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [apiError, setApiError] = useState("");
   const [retry, setRetry] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
-    setApiError("");
+    onError(undefined);
     fetchProduct(productId)
       .then((product) => {
         setProduct(product);
       })
-      .catch((err) => setApiError(err.message))
+      .catch(({ message }) =>
+        onError({ message, retry: () => setRetry(!retry) })
+      )
       .finally(() => setIsLoading(false));
-  }, [productId, retry])
+  }, [productId, onError, retry]);
 
   const toggleCart = () => {
     if (isInCart(product)) {
@@ -36,17 +34,10 @@ function Product({ addToCart, removeFromCart, isInCart }) {
     }
   };
 
-
   return (
     <main>
       {isLoading ? (
         <Loader />
-      ) : apiError ? (
-        <ErrorBanner
-          message={apiError}
-          close={() => setApiError("")}
-          retry={() => setRetry(!retry)}
-        />
       ) : (
         <div className="ProductDetail">
           <img src={product.image} alt={product.title} />
@@ -64,14 +55,14 @@ function Product({ addToCart, removeFromCart, isInCart }) {
         </div>
       )}
     </main>
-  )
+  );
 }
 
 Product.propTypes = {
   addToCart: PropTypes.func.isRequired,
   removeFromCart: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
   isInCart: PropTypes.func.isRequired,
 };
 
-
-export default Product
+export default Product;
