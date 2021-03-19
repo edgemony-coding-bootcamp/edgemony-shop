@@ -242,8 +242,8 @@ export const handlers = [
     `${baseURL}/carts/:id`,
     randomError(function getCartApi(req, res, ctx) {
       const id = parseInt(req.params.id);
-      const billingData = JSON.parse(req.body);
       try {
+        const { billingData } = JSON.parse(req.body);
         const cart = updateCartBillingData(id, billingData);
         return res(ctx.status(200), ctx.json(mapCart(cart)));
       } catch (error) {
