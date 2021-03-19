@@ -48,6 +48,8 @@ function WrapProducts({ products, openProductModal }) {
     }
     history.push({search: "?"+searchParams.toString()});
   }
+
+  
   const filteredProducts=products.filter((product)=>
   (inputUser) ?
   product.title.toUpperCase().indexOf(inputUser.toUpperCase())!==-1 && (selectedCategories.length===0 ||selectedCategories.includes(product.category) )

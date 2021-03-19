@@ -77,7 +77,7 @@ function App() {
   function setProductQuantity(productId, quantity) {
     updateCart(fetchAddToCart, cartId, productId, quantity);
   }
-  
+
 //fetch cart
   useEffect(() => {
     const cartIdFromLocalStorage = localStorage.getItem("edgemony-cart-id");
@@ -138,6 +138,12 @@ function App() {
                       inCart={isInCart}
                       addToCart={addToCart}
                       removeFromCart={removeFromCart}
+                      isLoading={isLoading}
+                      setLoad={setLoading}
+                      isErrorAPI={isErrorAPI}
+                      setErrorAPI={setErrorAPI}
+                      retry={retry}
+                      setRetry={setRetry}
                     />
                   </Route>
                   <Route exact path="/cart">
