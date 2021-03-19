@@ -1,7 +1,5 @@
 import PropTypes from "prop-types";
-import {
-  Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { formatPrice } from "../services/utils";
 import "./HeaderCart.css";
