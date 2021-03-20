@@ -38,3 +38,10 @@ export async function fetchDeleteItemFromCart(cartId,productId){
     method:'DELETE',
   })
 }
+
+export async function updateCart(cartId,billingData){
+  return  callAPI(`carts/${cartId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({billingData})
+  })
+}

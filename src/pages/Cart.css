@@ -1,0 +1,19 @@
+.Cart{
+    display: flex;
+    flex-direction: column;
+}
+.Cart button{
+    margin-top:15px;
+    border:none;
+    border-radius:5px;
+    padding:10px;
+    text-align:center;
+    cursor:pointer;
+}
+
+.Cart button:focus{
+    outline: none;
+}
+.Cart button:hover{
+    background-color:goldenrod;
+}

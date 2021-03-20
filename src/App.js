@@ -10,6 +10,8 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import Loading from "./components/Loading";
 import ErrorBanner from "./components/ErrorBanner";
+import Checkout from "./pages/Checkout";
+
 import {
   fetchCart,
   fetchAddToCart,
@@ -153,6 +155,9 @@ function App() {
                       setProductQuantity={setProductQuantity}
                       totalPrice={cartTotal}
                     />
+                  </Route>
+                  <Route exact path="/checkout">
+                    <Checkout cartId={cartId} />
                   </Route>
                   <Route path="*">
                     <Page404 />
