@@ -45,3 +45,15 @@ export async function updateCart(cartId,billingData){
     body: JSON.stringify({billingData})
   })
 }
+export async function newOrder(cartId){
+  return callAPI(`orders`,{
+    method: 'POST',
+    body: JSON.stringify({cartId:cartId})
+  })
+}
+
+export async function newCart(){
+  return callAPI(`carts`,{
+    method: 'POST'
+  })
+}

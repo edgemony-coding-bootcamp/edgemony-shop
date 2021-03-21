@@ -36,7 +36,7 @@ function App() {
   const [isLoading, setLoading] = useState(false);
   const [isErrorAPI, setErrorAPI] = useState(false);
   const [retry, setRetry] = useState(false);
-
+  const [newCart,setNewCart]=useState("");
   const [cart, setCart] = useState([]);
   /***********MODAL LOGIC********* */
 
@@ -99,7 +99,7 @@ function App() {
       }
       fetchCartEffect();
     }
-  }, [retry]);
+  }, [retry,newCart]);
   /*********end cart logic *******/
 
   return (
@@ -157,7 +157,7 @@ function App() {
                     />
                   </Route>
                   <Route exact path="/checkout">
-                    <Checkout cartId={cartId} />
+                    <Checkout cartId={cartId} setNewCart={setNewCart}/>
                   </Route>
                   <Route path="*">
                     <Page404 />
