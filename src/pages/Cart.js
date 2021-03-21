@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import CartProduct from "./../components/CartProduct";
 import { formatPrice } from "../services/utils";
 import Loader from "../components/Loader";
+import { Link } from "react-router-dom";
 
 function Cart({
   products,
@@ -29,7 +30,14 @@ function Cart({
           <p className="Cart__content__empty">The cart is empty</p>
         )}
       </div>
-      <footer>Total: {formatPrice(totalPrice)}</footer>
+      <footer>
+        Total: {formatPrice(totalPrice)}
+        {products.length > 0 ? (
+          <Link className="Cart__checkout" to="/checkout">
+            Go to checkout
+          </Link>
+        ) : null}
+      </footer>
     </div>
   );
 }

@@ -27,13 +27,33 @@ export async function fetchCart(cartId) {
 
 export async function postItemToCart(cartId, productId, quantity) {
   return callAPI(`carts/${cartId}/items`, {
-    method: 'POST',
-    body: JSON.stringify({ id: productId, quantity })
-  })
+    method: "POST",
+    body: JSON.stringify({ id: productId, quantity }),
+  });
 }
 
 export async function deleteItemFromCart(cartId, productId) {
   return callAPI(`carts/${cartId}/items/${productId}`, {
-    method: 'DELETE',
-  })
+    method: "DELETE",
+  });
+}
+
+export async function createCart() {
+  return callAPI("carts", {
+    method: "POST",
+  });
+}
+
+export async function updateCart(cartId, data) {
+  return callAPI(`carts/${cartId}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function createOrder(cartId) {
+  return callAPI("orders", {
+    method: "POST",
+    body: JSON.stringify({ cartId }),
+  });
 }

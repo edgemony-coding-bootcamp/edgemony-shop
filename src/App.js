@@ -1,7 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { postItemToCart, deleteItemFromCart, fetchCart } from "./services/api";
+import {
+  postItemToCart,
+  deleteItemFromCart,
+  fetchCart,
+  createOrder as createOrderApi,
+  updateCart as updateCartApi,
+  createCart,
+} from "./services/api";
 
 import "./App.css";
 
@@ -11,8 +18,7 @@ import Page404 from "./pages/Page404";
 import Cart from "./pages/Cart";
 import Header from "./components/Header";
 import ErrorBanner from "./components/ErrorBanner";
-
-let cartId;
+import Checkout from "./pages/Checkout";
 
 const data = {
   title: "Edgemony Shop",
@@ -25,30 +31,50 @@ const data = {
 
 function App() {
   // Cart Logic
-  const [cart, setCart] = useState([]);
-  const cartTotal = cart.reduce(
-    (total, product) => total + product.price * product.quantity,
-    0
-  );
+  const [cart, setCart] = useState(undefined);
+  const cartTotal =
+    cart?.items.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0
+    ) || 0;
   function isInCart(product) {
-    return product != null && cart.find((p) => p.id === product.id) != null;
+    return (
+      product != null && cart?.items.find((p) => p.id === product.id) != null
+    );
   }
   async function updateCart(fn, ...apiParams) {
     try {
-      const cartObj = await fn(...apiParams);
-      setCart(cartObj.items);
+      const cart = await fn(...apiParams);
+      setCart(cart);
+      return cart;
     } catch (error) {
       console.error(`${fn.name} API call response error! ${error.message}`);
     }
   }
   function addToCart(productId) {
-    updateCart(postItemToCart, cartId, productId, 1);
+    if (cart) {
+      updateCart(postItemToCart, cart.id, productId, 1);
+    }
   }
   function removeFromCart(productId) {
-    updateCart(deleteItemFromCart, cartId, productId);
+    if (cart) {
+      updateCart(deleteItemFromCart, cart.id, productId);
+    }
   }
   function setProductQuantity(productId, quantity) {
-    updateCart(postItemToCart, cartId, productId, quantity);
+    if (cart) {
+      updateCart(postItemToCart, cart.id, productId, quantity);
+    }
+  }
+  async function createOrder(data) {
+    if (cart) {
+      await updateCart(async () => {
+        const cartUpdated = await updateCartApi(cart.id, { billingData: data });
+        await createOrderApi(cartUpdated.id);
+        const newCart = await createCart();
+        localStorage.setItem("edgemony-cart-id", newCart.id);
+      });
+    }
   }
 
   const [apiErrors, setApiErrors] = useState({});
@@ -81,9 +107,8 @@ function App() {
     setCartError(undefined);
     async function fetchCartInEffect() {
       try {
-        const cartObj = await fetchCart(cartIdFromLocalStorage);
-        setCart(cartObj.items);
-        cartId = cartObj.id;
+        const cart = await fetchCart(cartIdFromLocalStorage);
+        setCart(cart);
       } catch ({ message }) {
         setCartError({ message, retry: () => setRetry(!retry) });
       } finally {
@@ -100,7 +125,7 @@ function App() {
           logo={data.logo}
           title={data.title}
           cartTotal={cartTotal}
-          cartSize={cart.length}
+          cartSize={cart?.items.length || 0}
           showCart={!isLoading && !cartError}
         />
 
@@ -118,12 +143,15 @@ function App() {
           </Route>
           <Route path="/cart">
             <Cart
-              products={cart}
+              products={cart?.items || []}
               totalPrice={cartTotal}
               removeFromCart={removeFromCart}
               setProductQuantity={setProductQuantity}
               isLoading={isLoading}
             />
+          </Route>
+          <Route path="/checkout">
+            <Checkout cart={cart} onCreateOrder={createOrder} />
           </Route>
           <Route path="*">
             <Page404 />
